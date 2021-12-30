@@ -1,11 +1,12 @@
 from collections import deque
+from copy import deepcopy
 from string import ascii_letters
 
 
 class Rotor:
-    def __init__(self, alphabet: str, notch: list[str], position: chr = "A") -> None:
+    def __init__(self, alphabet: str, notch: list[str], position: str = "A") -> None:
         if len(position) > 1 or position not in ascii_letters:
-            raise Exception("Invalid starting position")
+            raise ValueError(f"Invalid starting position {position}")
 
         self._alphabet = deque([a for a in alphabet])
         self._notch = [ord(n.upper()) - 65 for n in notch]
@@ -37,7 +38,7 @@ class Rotor:
     @position.setter
     def position(self, position: str) -> None:
         if len(position) > 1 or position not in ascii_letters:
-            raise Exception("Invalid starting position")
+            raise ValueError(f"Invalid starting position {position}")
 
         self._alphabet.rotate(self._position)
         self._position = ord(position.upper()) - 65
@@ -61,30 +62,52 @@ class UKW(Rotor):
         self._alphabet = deque([a for a in alphabet])
 
 
+class ETW(Rotor):
+    def __init__(self, alphabet: str):
+        self._alphabet = deque([a for a in alphabet])
+
+
 class Enigma:
-    def __init__(self) -> None:
-        self._rotors_map = {
-            "I": {"alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "notch": ["Q"]},
-            "II": {"alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE", "notch": ["E"]},
-            "III": {"alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO", "notch": ["V"]},
-            "IV": {"alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB", "notch": ["Z"]},
-            "V": {"alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK", "notch": ["Z", "M"]},
-            "VI": {"alphabet": "JPGVOUMFYQBENHZRDKASXLICTW", "notch": ["Z", "M"]},
-            "VII": {"alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT", "notch": ["Z", "M"]},
-            "VIII": {"alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV", "notch": ["Z", "M"]},
-            "BETA": {"alphabet": "LEYJVCNIXWPBQMDRTAKZGFUHOS", "notch": []},
-            "GAMMA": {"alphabet": "FSOKANUERHMBTIYCWLQPZXVGJD", "notch": []},
-        }
+    def __init__(self, **kwargs) -> None:
+        """Keyword Args:
+        rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
+        ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 reflectors (see below).
+        etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to None.
+        max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
+        model (Optional[str]): name of the model of the machine. Defaults to "Custom".
+        year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
+        """
 
-        self._ukw_map = {
-            "A": {"alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"},
-            "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
-            "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
-            "B-THIN": {"alphabet": "ENKQAUYWJICOPBLMDXZVFTHRGS"},
-            "C-THIN": {"alphabet": "RDOBJNTKVEHMLFCWZAXGYIPSUQ"},
-        }
+        if kwargs.get("etw_map"):
+            self._etw_map = deepcopy(kwargs["etw_map"])
+        else:
+            self._etw_map = None
 
+        if kwargs.get("ukw_map"):
+            self._ukw_map = deepcopy(kwargs["ukw_map"])
+        else:
+            self._ukw_map = {
+                "A": {"alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"},
+                "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
+                "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
+            }
+
+        if kwargs.get("rotors_map"):
+            self._rotors_map = deepcopy(kwargs["rotors_map"])
+        else:
+            self._rotors_map = {
+                "I": {"alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "notch": ["Q"]},
+                "II": {"alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE", "notch": ["E"]},
+                "III": {"alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO", "notch": ["V"]},
+                "IV": {"alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB", "notch": ["J"]},
+                "V": {"alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK", "notch": ["Z"]},
+            }
+
+        self._model = kwargs.get("model", "Custom")
+        self._year = kwargs.get("year", 2022)
+        self._max_rotors = kwargs.get("max_rotors")
         self._rotors = []
+        self._etw = None
         self._ukw = None
         self._plugboard = []
 
@@ -105,16 +128,24 @@ class Enigma:
         return c
 
     def _signalTravel(self, c: str) -> str:
+        # entry
+        if self._etw:
+            c = self._etw.left(c)
+
         # right to left
         for r in self._rotors[::-1]:
             c = r.left(c)
 
         # reflector
-        c = self._ukw.left(c)
+        if self._ukw:
+            c = self._ukw.left(c)
 
         # left to right
         for r in self._rotors:
             c = r.right(c)
+
+        if self._etw:
+            c = self._etw.right(c)
 
         return c
 
@@ -130,6 +161,9 @@ class Enigma:
                 self._rotors[x - 1].step()
 
     def addRotor(self, rotor: str, position: str = "A") -> None:
+        if self._max_rotors and len(self._rotors) > self._max_rotors:
+            raise ValueError(f"This machine supports only {self._max_rotors} rotors")
+
         try:
             self._rotors.append(
                 Rotor(
@@ -139,18 +173,18 @@ class Enigma:
                 )
             )
         except Exception:
-            raise Exception(f"Unknown rotor {rotor}")
+            raise ValueError(f"Unknown rotor {rotor}")
 
     def removeRotors(self) -> None:
         self._rotors = []
 
     def setRotorsPositions(self, pos: str) -> None:
         if len(pos) != len(self._rotors):
-            raise Exception("Invalid rotors position")
+            raise ValueError("Invalid rotors position")
 
         for x, p in enumerate(pos):
             if p not in ascii_letters:
-                raise Exception(f"Position {p} is not valid")
+                raise ValueError(f"Position {p} is not valid")
             self._rotors[x].position = p
 
     def getRotorsPositions(self) -> str:
@@ -165,11 +199,17 @@ class Enigma:
         try:
             self._ukw = UKW(self._ukw_map[ukw]["alphabet"])
         except KeyError:
-            raise KeyError(f"Unknown ukw {ukw}")
+            raise ValueError(f"Unknown ukw {ukw}")
+
+    def setETW(self, etw: str) -> None:
+        try:
+            self._etw = ETW(self._etw_map[etw]["alphabet"])
+        except KeyError:
+            raise ValueError(f"Unknown ukw {etw}")
 
     def setPlugboard(self, *plugs: str) -> None:
         if len(plugs) > 10:
-            raise Exception("Max 10 plugs")
+            raise ValueError("Max 10 plugs are allowed")
 
         for p in plugs:
             if len(p) != 2:
@@ -180,8 +220,6 @@ class Enigma:
     def encode(self, clean: str, format_output: bool = False) -> str:
         if not self._rotors:
             raise Exception("No rotors have been added")
-        if not self._ukw:
-            raise Exception("No ukw has been added")
 
         encoded = []
 
@@ -223,15 +261,22 @@ class Enigma:
     def rotors_position(self) -> str:
         return self.getRotorsPositions()
 
+    @property
+    def available_rotors(self) -> list[str]:
+        return [r for r in self._rotors_map.keys()]
 
-class EnigmaFactory:
-    def __init__(self):
-        pass
+    @property
+    def available_UKWs(self) -> list[str]:
+        return [r for r in self._ukw_map.keys()]
 
+    @property
+    def max_rotors(self) -> int:
+        return self._max_rotors
 
-def main():
-    pass
+    @property
+    def year(self):
+        return self._year
 
-
-if __name__ == "__main__":
-    main()
+    @property
+    def model(self):
+        return self._model
