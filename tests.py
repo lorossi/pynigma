@@ -1,4 +1,3 @@
-from math import factorial
 from enigma import Enigma
 from enigmafactory import EnigmaFactory
 
@@ -30,7 +29,7 @@ class TestEnigma(unittest.TestCase):
 
         return plugs
 
-    def _random_string(self, length: int = 3) -> str:
+    def _random_string(self, length: int = 3) -> list[str, str]:
         return "".join([chr(randint(0, 25) + 65) for x in range(length)])
 
     def _simple_encode(self, a: str, format_output: bool = False) -> tuple[str, str]:
@@ -48,23 +47,6 @@ class TestEnigma(unittest.TestCase):
             return a.upper(), decoded
 
         return e._formatOutput(a.upper()), decoded
-
-    def _factory_hard_encode(self, e: Enigma):
-        for _ in range(e.max_rotors):
-            e.addRotor(choice(e.available_rotors))
-
-        e.setUKW(choice(e.available_UKWs))
-
-        pos = self._random_positions(len(e._rotors))
-        clear = self._random_string(STRING_LENGTH)
-
-        e.setRotorsPositions(pos)
-        encoded = e.encode(clear)
-
-        e.setRotorsPositions(pos)
-        decoded = e.encode(encoded)
-
-        return decoded, clear
 
     def test_create_enigma(self):
         e = Enigma()
@@ -245,20 +227,51 @@ class TestEnigma(unittest.TestCase):
         self.assertEqual(decoded, clear)
 
     def test_factory(self):
+        max_rotors = {
+            "Commercial": 3,
+            "Rocket": 3,
+            "Swiss": 3,
+            "M3": 3,
+            "M4": 4,
+            "M4-Thin": 4,
+        }
+
         factory = EnigmaFactory()
         for model in factory.available_models:
             e = factory.createEnigma(model)
             self.assertEqual(e.model, model)
+            self.assertEqual(max_rotors[e.model], e.max_rotors)
 
         e = factory.createEnigma("M4")
         with self.assertRaises(Exception):
             e.setRotors("I", "II", "III", "IV", "V", "VI", "VII")
 
-        # Not working somehow
+        with self.assertRaises(Exception):
+            e.setETW("A")
+
         for model in factory.available_models:
-            e = factory.createEnigma(model)
             for _ in range(TESTS_NUM):
-                self.assertEqual(*self._factory_hard_encode(e))
+                e = factory.createEnigma(model)
+
+                for _ in range(e.max_rotors):
+                    e.addRotor(choice(e.available_rotors))
+
+                if e.available_UKWs:
+                    e.setUKW(choice(e.available_UKWs))
+
+                if e.available_ETWs:
+                    e.setETW(choice(e.available_ETWs))
+
+                pos = self._random_positions(len(e._rotors))
+                clear = self._random_string(STRING_LENGTH)
+
+                e.setRotorsPositions(pos)
+                encoded = e.encode(clear)
+
+                e.setRotorsPositions(pos)
+                decoded = e.encode(encoded)
+
+                self.assertEqual(decoded, clear)
 
 
 if __name__ == "__main__":
