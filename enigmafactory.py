@@ -106,6 +106,9 @@ class EnigmaFactory:
             },
         }
 
+    def __str__(self) -> str:
+        return f"Class used to create historically accurate Enigma machines. Available models: {', '.join(self.available_models)}"
+
     def createEnigma(self, model: str = "M3") -> Enigma:
         if self._settings.get(model):
             return Enigma(model, **self._settings[model])
@@ -114,9 +117,28 @@ class EnigmaFactory:
             f"Invalid model. Valid models are: {', '.join(self.available_models)}"
         )
 
-    def __str__(self) -> str:
-        return f"Class used to create historically accurate Enigma machines. Available models: {', '.join(self.available_models)}"
-
     @property
     def available_models(self) -> list[str]:
         return [m for m in self._settings]
+
+
+class CustomEnigmaFactory:
+    def __init__(self) -> None:
+        self._custom_rotors = {}
+        self._custom_etw = {}
+        self._custom_ukw = {}
+
+    def __str__(self) -> str:
+        return f"Class used to create custom Enigma machines."
+
+    def createCustomEnigma(self) -> Enigma:
+        raise NotImplementedError
+
+    def addCustomETW(self, alphabet: str) -> None:
+        raise NotImplementedError
+
+    def addCustomUWK(self, alphabet: str) -> None:
+        raise NotImplementedError
+
+    def addCustomRotor(self, alphabet: str, notch: list[str]) -> None:
+        raise NotImplementedError()
