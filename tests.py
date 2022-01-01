@@ -249,6 +249,9 @@ class TestEnigma(unittest.TestCase):
         with self.assertRaises(Exception):
             e.setETW("A")
 
+        with self.assertRaises(Exception):
+            factory.createEnigma("British")
+
         for model in factory.available_models:
             for _ in range(TESTS_NUM):
                 e = factory.createEnigma(model)
