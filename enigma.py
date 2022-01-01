@@ -90,6 +90,14 @@ class ETW(Rotor):
 
 
 class Enigma:
+    def __str__(self) -> str:
+        return (
+            f"Enigma machine model {self.model}, built in {self.year}. "
+            f"Current ETW: {self._etw if self._etw else 'N/A'}. "
+            f"Current UKW: {self._ukw if self._ukw else 'N/A'}. "
+            f"Current rotors position: {self.rotors_position}."
+        )
+
     def __init__(self, model="Custom", **kwargs) -> None:
         """Keyword Args:
         rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
