@@ -35,10 +35,6 @@ class Rotor:
             raise ValueError(f"Invalid starting position {position}")
 
         self._alphabet = deque([a.upper() for a in alphabet])
-        self._reverse_alphabet = deque([None for _ in range(26)])
-        for a in ascii_uppercase:
-            pos = self._alphabet.index(a)
-            self._reverse_alphabet.append(chr(pos + 65))
 
         self._notch = [ord(n.upper()) - 65 for n in notch]
         self._position = ord(position.upper()) - 65
@@ -68,8 +64,8 @@ class Rotor:
         Returns:
             str: Encoded letter
         """
-        pos = ord(letter.upper()) - 65
-        return self._reverse_alphabet[pos]
+        pos = self._alphabet.index(letter)
+        return chr(pos + 65)
 
     def step(self, steps=1) -> None:
         """Steps the rotor by a set number of steps.
@@ -467,3 +463,15 @@ class Enigma:
     @property
     def model(self) -> str:
         return self._model
+
+
+def main():
+    e = Enigma()
+    e.addRotor("I")
+    e.setUKW("A")
+
+    print(e.encode("A"))
+
+
+if __name__ == "__main__":
+    main()
