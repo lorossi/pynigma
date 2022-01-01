@@ -34,7 +34,7 @@ class Rotor:
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
 
-        self._alphabet = deque([a.upper() for a in alphabet])
+        self._alphabet = {ascii_uppercase[x]: alphabet.upper()[x] for x in range(26)}
 
         self._notch = [ord(n.upper()) - 65 for n in notch]
         self._position = ord(position.upper()) - 65
