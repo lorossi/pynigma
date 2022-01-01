@@ -1,19 +1,35 @@
 from collections import deque
 from copy import deepcopy
-from string import ascii_letters
+from string import ascii_letters, ascii_uppercase
 
 
 class Rotor:
-    def __init__(self, alphabet: str, notch: list[str], position: str = "A") -> None:
+    def __init__(
+        self, alphabet: str, notch: list[str], position: str = "A", model: str = None
+    ) -> None:
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
+
+        if len(alphabet) != 26:
+            raise ValueError(f"Invalid rotor length")
+
+        if any(l not in alphabet.upper() for l in ascii_uppercase):
+            raise ValueError(f"Invalid rotor")
 
         self._alphabet = deque([a for a in alphabet])
         self._notch = [ord(n.upper()) - 65 for n in notch]
         self._position = ord(position.upper()) - 65
+        self._model = model
 
         self.step(self._position)
         self._stepped = False
+
+    def _wrapPosition(self, position: int) -> int:
+        while position < 0:
+            position += 25
+        while position > 25:
+            position -= 25
+        return position
 
     def left(self, letter: str) -> str:
         pos = ord(letter.upper()) - 65
@@ -50,21 +66,27 @@ class Rotor:
 
     @property
     def hit_notch(self) -> bool:
-        return self._position % 26 - 1 in self._notch and self._stepped
+        return self._wrapPosition(self._position - 1) in self._notch and self._stepped
 
     @property
-    def in_notch(self):
-        return self._position % 26 in self._notch and not self._stepped
+    def in_notch(self) -> bool:
+        return self._wrapPosition(self._position) in self._notch and not self._stepped
+
+    @property
+    def model(self) -> str:
+        return self._model
 
 
 class UKW(Rotor):
-    def __init__(self, alphabet: str):
+    def __init__(self, alphabet: str, model: str = None):
         self._alphabet = deque([a for a in alphabet])
+        self._model = model
 
 
 class ETW(Rotor):
-    def __init__(self, alphabet: str):
+    def __init__(self, alphabet: str, model: str = None):
         self._alphabet = deque([a for a in alphabet])
+        self._model = model
 
 
 class Enigma:
@@ -78,12 +100,12 @@ class Enigma:
         year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
         """
 
-        if kwargs.get("etw_map"):
+        if kwargs.get("etw_map") or isinstance(kwargs.get("etw_map"), dict):
             self._etw_map = deepcopy(kwargs["etw_map"])
         else:
             self._etw_map = None
 
-        if kwargs.get("ukw_map"):
+        if kwargs.get("ukw_map") or isinstance(kwargs.get("ukw_map"), dict):
             self._ukw_map = deepcopy(kwargs["ukw_map"])
         else:
             self._ukw_map = {
@@ -162,14 +184,15 @@ class Enigma:
 
     def addRotor(self, rotor: str, position: str = "A") -> None:
         if self._max_rotors and len(self._rotors) > self._max_rotors:
-            raise ValueError(f"This machine supports only {self._max_rotors} rotors")
+            raise ValueError(f"This machine supports only {self._max_rotors} rotors.")
 
         try:
             self._rotors.append(
                 Rotor(
                     self._rotors_map[rotor]["alphabet"],
                     self._rotors_map[rotor]["notch"],
-                    position,
+                    position=position,
+                    model=rotor,
                 )
             )
         except Exception:
@@ -197,13 +220,13 @@ class Enigma:
 
     def setUKW(self, ukw: str) -> None:
         try:
-            self._ukw = UKW(self._ukw_map[ukw]["alphabet"])
+            self._ukw = UKW(self._ukw_map[ukw]["alphabet"], model=ukw)
         except KeyError:
             raise ValueError(f"Unknown ukw {ukw}")
 
     def setETW(self, etw: str) -> None:
         try:
-            self._etw = ETW(self._etw_map[etw]["alphabet"])
+            self._etw = ETW(self._etw_map[etw]["alphabet"], model=etw)
         except KeyError:
             raise ValueError(f"Unknown ukw {etw}")
 
@@ -267,16 +290,26 @@ class Enigma:
 
     @property
     def available_UKWs(self) -> list[str]:
-        return [r for r in self._ukw_map.keys()]
+        if self._ukw_map:
+            return [u for u in self._ukw_map.keys()]
+        return []
+
+    @property
+    def available_ETWs(self) -> list[str]:
+        if self._etw_map:
+            return [e for e in self._etw_map.keys()]
+        return []
 
     @property
     def max_rotors(self) -> int:
-        return self._max_rotors
+        if self._max_rotors:
+            return self._max_rotors
+        return -1
 
     @property
-    def year(self):
+    def year(self) -> int:
         return self._year
 
     @property
-    def model(self):
+    def model(self) -> str:
         return self._model
