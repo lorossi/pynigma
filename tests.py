@@ -144,6 +144,13 @@ class TestEnigma(unittest.TestCase):
             e.encode("A")
             self.assertEqual(e.rotors_position, positions.pop(0))
 
+        e.setRotors("I", "II", "III")
+        e.setRotorsPositions("AAT")
+        positions = ["AAU", "AAV", "ABW", "ABX"]
+        while positions:
+            e.encode("A")
+            self.assertEqual(e.rotors_position, positions.pop(0))
+
     def test_simple_encoding(self):
         self.assertEqual(*self._simple_encode("AAAAAA"))
         self.assertEqual(*self._simple_encode("Ma che bel castello"))

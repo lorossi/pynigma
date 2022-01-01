@@ -108,9 +108,7 @@ class EnigmaFactory:
 
     def createEnigma(self, model: str = "M3") -> Enigma:
         if self._settings.get(model):
-            # add model name to settings
-            self._settings[model]["model"] = model
-            return Enigma(**self._settings[model])
+            return Enigma(model, **self._settings[model])
 
         raise ValueError(
             f"Invalid model. Valid models are: {', '.join(self.available_models)}"

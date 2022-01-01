@@ -90,7 +90,7 @@ class ETW(Rotor):
 
 
 class Enigma:
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, model="Custom", **kwargs) -> None:
         """Keyword Args:
         rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
         ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 reflectors (see below).
@@ -125,7 +125,7 @@ class Enigma:
                 "V": {"alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK", "notch": ["Z"]},
             }
 
-        self._model = kwargs.get("model", "Custom")
+        self._model = model
         self._year = kwargs.get("year", 2022)
         self._max_rotors = kwargs.get("max_rotors")
         self._rotors = []
