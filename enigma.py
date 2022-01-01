@@ -7,52 +7,107 @@ class Rotor:
     def __init__(
         self, alphabet: str, notch: list[str], position: str = "A", model: str = None
     ) -> None:
+        """Creates a rotor.
+
+        Args:
+            alphabet (str): Alphabet of the rotor
+            notch (list[str]): List of notches for the rotor
+            position (str, optional): Starting position of the rotor. Defaults to "A".
+            model (str, optional): Model of the rotor. Defaults to None.
+
+        Raises:
+            ValueError: Alphabet is invalid
+            ValueError: Notch is invalid
+            ValueError: Starting position is invalid
+        """
+
+        # check if all letters are in the alphabet and if alphabet is valid
+        if len(alphabet) != 26 or any(
+            l not in alphabet.upper() for l in ascii_uppercase
+        ):
+            raise ValueError(f"Invalid rotor alphabet ({alphabet})")
+        # check if notch is valid
+        for n in notch:
+            if not n in ascii_letters:
+                raise ValueError(f"Invalid notch {n}")
+        # check if start position is valid
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
 
-        if len(alphabet) != 26:
-            raise ValueError(f"Invalid rotor length")
+        self._alphabet = deque([a.upper() for a in alphabet])
 
-        if any(l not in alphabet.upper() for l in ascii_uppercase):
-            raise ValueError(f"Invalid rotor")
-
-        self._alphabet = deque([a for a in alphabet])
         self._notch = [ord(n.upper()) - 65 for n in notch]
         self._position = ord(position.upper()) - 65
         self._model = model
-
+        # set rotor in place
         self.step(self._position)
         self._stepped = False
 
-    def _wrapPosition(self, position: int) -> int:
+    def left(self, letter: str) -> str:
+        """Move letter from right to left.
+
+        Args:
+            letter (str): Letter to encode
+
+        Returns:
+            str: Encoded letter
+        """
+        pos = ord(letter.upper()) - 65
+        return self._alphabet[pos]
+
+    def right(self, letter: str) -> str:
+        """Move letter from left to right.
+
+        Args:
+            letter (str): Letter to encode
+
+        Returns:
+            str: Encoded letter
+        """
+        pos = self._alphabet.index(letter)
+        return chr(pos + 65)
+
+    def step(self, steps=1) -> None:
+        """Steps the rotor by a set number of steps.
+
+        Args:
+            steps (int, optional): Number of steps. Defaults to 1.
+        """
+        self._position += steps
+        self._alphabet.rotate(-steps)
+        self._stepped = True
+
+    def resetStep(self) -> None:
+        """Resets the current status of the rotation."""
+        self._stepped = False
+
+    def _wrapOrd(self, position: int) -> int:
+        """Wraps the ord of a letter in range 0-25
+
+        Args:
+            position (int)
+
+        Returns:
+            int
+        """
         while position < 0:
             position += 25
         while position > 25:
             position -= 25
         return position
 
-    def left(self, letter: str) -> str:
-        pos = ord(letter.upper()) - 65
-        return self._alphabet[pos]
-
-    def right(self, letter: str) -> str:
-        pos = self._alphabet.index(letter)
-        return chr(pos + 65)
-
-    def step(self, steps=1) -> None:
-        self._position += steps
-        self._alphabet.rotate(-steps)
-        self._stepped = True
-
-    def reset(self) -> None:
-        self._stepped = False
-
     @property
     def position(self) -> str:
+        """Returns current position fo the rotor as a letter
+
+        Returns:
+            str
+        """
         return chr(self._position % 26 + 65)
 
     @position.setter
     def position(self, position: str) -> None:
+        """Sets the current position of the rotor as a letter."""
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
 
@@ -62,18 +117,38 @@ class Rotor:
 
     @property
     def alphabet(self) -> str:
+        """Returns the alphabet of the rotor as a string.
+
+        Returns:
+            str
+        """
         return "".join(self._alphabet)
 
     @property
     def hit_notch(self) -> bool:
-        return self._wrapPosition(self._position - 1) in self._notch and self._stepped
+        """Returns True if the rotor has hit a notch position in the current step, False otherwise.
+
+        Returns:
+            bool
+        """
+        return self._wrapOrd(self._position - 1) in self._notch and self._stepped
 
     @property
     def in_notch(self) -> bool:
-        return self._wrapPosition(self._position) in self._notch and not self._stepped
+        """Returns True if the rotor is in the notch position when the step is completed, False otherwise.
+
+        Returns:
+            bool
+        """
+        return self._wrapOrd(self._position) in self._notch and not self._stepped
 
     @property
     def model(self) -> str:
+        """Returns rotor model.
+
+        Returns:
+            str
+        """
         return self._model
 
 
@@ -99,13 +174,18 @@ class Enigma:
         )
 
     def __init__(self, model="Custom", **kwargs) -> None:
-        """Keyword Args:
-        rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
-        ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 reflectors (see below).
-        etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to None.
-        max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
-        model (Optional[str]): name of the model of the machine. Defaults to "Custom".
-        year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
+        """Create a Enigma machine. With default settings, it generates a version similar to 1938 model M3.
+
+        Args:
+            model (str, optional): [description]. Defaults to "Custom".
+
+        Keyword Args:
+            rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
+            ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 reflectors (see below).
+            etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to None.
+            max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
+            model (Optional[str]): name of the model of the machine. Defaults to "Custom".
+            year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
         """
 
         if kwargs.get("etw_map") or isinstance(kwargs.get("etw_map"), dict):
@@ -141,8 +221,156 @@ class Enigma:
         self._ukw = None
         self._plugboard = []
 
-    def _formatOutput(self, output: str) -> str:
-        formatted = "".join(output.split(" "))
+    def addRotor(self, rotor: str, position: str = "A") -> None:
+        """Adds a rotor to the machine.
+
+        Args:
+            rotor (str): Model of the rotor
+            position (str, optional): Starting position of the rotor. Defaults to "A".
+
+        Raises:
+            ValueError: Too many rotors have been added
+            ValueError: The rotor is not available in the current machine
+        """
+        if self._max_rotors and len(self._rotors) > self._max_rotors:
+            raise ValueError(f"This machine supports only {self._max_rotors} rotors.")
+
+        try:
+            self._rotors.append(
+                Rotor(
+                    self._rotors_map[rotor]["alphabet"],
+                    self._rotors_map[rotor]["notch"],
+                    position=position,
+                    model=rotor,
+                )
+            )
+        except Exception:
+            raise ValueError(f"Unknown rotor {rotor}")
+
+    def removeRotors(self) -> None:
+        """Removes all rotors from the current machine."""
+        self._rotors = []
+
+    def setRotorsPositions(self, pos: str) -> None:
+        """Set configuration of the rotors
+
+        Args:
+            pos (str): String of characters corresponding to the position of each rotor.
+
+        Raises:
+            ValueError: Length of the position is different to the number of rotors
+            ValueError: A character is not valid (not a letter in range A-Z)
+        """
+        if len(pos) != len(self._rotors):
+            raise ValueError("Invalid rotors position")
+
+        for x, p in enumerate(pos):
+            if p not in ascii_letters:
+                raise ValueError(f"Position {p} is not valid")
+            self._rotors[x].position = p
+
+    def setRotors(self, *rotors: str) -> None:
+        """Sets a variable number of rotors according to their model.
+        Their starting positions are defaulted to "A".
+
+        Shorthand for self.addRotor() called multiple times.
+        """
+        self._rotors = []
+        for r in rotors:
+            self.addRotor(r, "A")
+
+    def setUKW(self, ukw: str) -> None:
+        """Set the UKW (reflector) according to its model.
+
+        Args:
+            ukw (str): Model of the UKW
+
+        Raises:
+            ValueError: UKW model is not valid
+        """
+        try:
+            self._ukw = UKW(self._ukw_map[ukw]["alphabet"], model=ukw)
+        except KeyError:
+            raise ValueError(f"Unknown ukw {ukw}")
+
+    def setETW(self, etw: str) -> None:
+        """Set the ETW (entry rotor) according to its model.
+
+        Args:
+            etw (str): Model of the ETW
+
+        Raises:
+            ValueError: ETW model is not valid
+        """
+        try:
+            self._etw = ETW(self._etw_map[etw]["alphabet"], model=etw)
+        except KeyError:
+            raise ValueError(f"Unknown ukw {etw}")
+
+    def setPlugboard(self, *plugs: str) -> None:
+        if len(plugs) > 10:
+            raise ValueError("Max 10 plugs are allowed")
+
+        for p in plugs:
+            if len(p) != 2:
+                raise Exception("Invalid plugs combinations")
+
+        self._plugboard = [(x[0], x[1]) for x in plugs]
+
+    def encode(self, clean: str, format_output: bool = False) -> str:
+        if not self._rotors:
+            raise Exception("No rotors have been added")
+        if self._ukw_map and not self._ukw:
+            raise Exception("No UKW has been added")
+        if self._etw_map and not self._etw:
+            raise Exception("No ETW has been added")
+
+        encoded = []
+
+        for c in clean:
+            if c not in ascii_letters:
+                if not format_output:
+                    encoded.append(c)
+                continue
+
+            # reset rotors
+            for r in self._rotors:
+                r.resetStep()
+
+            # step last
+            self._rotors[-1].step()
+
+            # plugboard
+            e = self._applyPlugboard(c)
+
+            # rotors and stuff
+            e = self._signalTravel(e)
+
+            # plugboard
+            e = self._applyPlugboard(e)
+
+            # notches turnover happens when the button is depressed
+            self._computeRotations()
+
+            # append encoded character
+            encoded.append(e)
+
+        unformatted = "".join(encoded)
+        if not format_output:
+            return unformatted
+
+        return self._formatOutput(unformatted)
+
+    def _formatOutput(self, raw: str) -> str:
+        """Format string by grouping words by 4 letters
+
+        Args:
+            raw (str): Raw, unformatted, string
+
+        Returns:
+            str: Formatted string
+        """
+        formatted = "".join(raw.split(" "))
         return " ".join(formatted[x : x + 5] for x in range(0, len(formatted), 5))
 
     def _applyPlugboard(self, c: str) -> str:
@@ -158,6 +386,15 @@ class Enigma:
         return c
 
     def _signalTravel(self, c: str) -> str:
+        """Moves a signal (the letter) through the machine, effectively encoding it.
+        Handles ETW, UKW and rotors.
+
+        Args:
+            c (str): Character to encode
+
+        Returns:
+            str: Encoded character
+        """
         # entry
         if self._etw:
             c = self._etw.left(c)
@@ -179,7 +416,10 @@ class Enigma:
 
         return c
 
-    def _applyNotches(self) -> None:
+    def _computeRotations(self) -> None:
+        """Handles all the rotations of the rotors in the machine.
+        This has to be called after each step.
+        """
         for x in range(len(self._rotors) - 1, 0, -1):
             # notch stepping
             if self._rotors[x].hit_notch:
@@ -190,107 +430,9 @@ class Enigma:
                 self._rotors[x].step()
                 self._rotors[x - 1].step()
 
-    def addRotor(self, rotor: str, position: str = "A") -> None:
-        if self._max_rotors and len(self._rotors) > self._max_rotors:
-            raise ValueError(f"This machine supports only {self._max_rotors} rotors.")
-
-        try:
-            self._rotors.append(
-                Rotor(
-                    self._rotors_map[rotor]["alphabet"],
-                    self._rotors_map[rotor]["notch"],
-                    position=position,
-                    model=rotor,
-                )
-            )
-        except Exception:
-            raise ValueError(f"Unknown rotor {rotor}")
-
-    def removeRotors(self) -> None:
-        self._rotors = []
-
-    def setRotorsPositions(self, pos: str) -> None:
-        if len(pos) != len(self._rotors):
-            raise ValueError("Invalid rotors position")
-
-        for x, p in enumerate(pos):
-            if p not in ascii_letters:
-                raise ValueError(f"Position {p} is not valid")
-            self._rotors[x].position = p
-
-    def getRotorsPositions(self) -> str:
-        return "".join(r.position for r in self._rotors)
-
-    def setRotors(self, *rotors: str) -> None:
-        self._rotors = []
-        for r in rotors:
-            self.addRotor(r, "A")
-
-    def setUKW(self, ukw: str) -> None:
-        try:
-            self._ukw = UKW(self._ukw_map[ukw]["alphabet"], model=ukw)
-        except KeyError:
-            raise ValueError(f"Unknown ukw {ukw}")
-
-    def setETW(self, etw: str) -> None:
-        try:
-            self._etw = ETW(self._etw_map[etw]["alphabet"], model=etw)
-        except KeyError:
-            raise ValueError(f"Unknown ukw {etw}")
-
-    def setPlugboard(self, *plugs: str) -> None:
-        if len(plugs) > 10:
-            raise ValueError("Max 10 plugs are allowed")
-
-        for p in plugs:
-            if len(p) != 2:
-                raise Exception("Invalid plugs combinations")
-
-        self._plugboard = [(x[0], x[1]) for x in plugs]
-
-    def encode(self, clean: str, format_output: bool = False) -> str:
-        if not self._rotors:
-            raise Exception("No rotors have been added")
-
-        encoded = []
-
-        for c in clean:
-            if c not in ascii_letters:
-                if not format_output:
-                    encoded.append(c)
-                continue
-
-            # reset rotors
-            for r in self._rotors:
-                r.reset()
-
-            # step last
-            self._rotors[-1].step()
-
-            # plugboard
-            e = self._applyPlugboard(c)
-
-            # rotors and stuff
-            e = self._signalTravel(e)
-
-            # plugboard
-            e = self._applyPlugboard(e)
-
-            # notches turnover happens when the button is depressed
-            self._applyNotches()
-
-            # append encoded character
-            encoded.append(e)
-
-        unformatted = "".join(encoded)
-        if not format_output:
-            return unformatted
-
-        return self._formatOutput(unformatted)
-
     @property
     def rotors_position(self) -> str:
-        return self.getRotorsPositions()
+        return "".join(r.position for r in self._rotors)
 
     @property
     def available_rotors(self) -> list[str]:
