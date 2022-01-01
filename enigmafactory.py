@@ -8,20 +8,20 @@ class EnigmaFactory:
         match model:
             case "Commercial":
                 kwargs["rotors_map"] = {
-                        "IC": {"alphabet": "DMTWSILRUYQNKFEJCAZBPGXOHV"}, "notch": ["Z"],
-                        "IIC": {"alphabet": "HQZGPJTMOBLNCIFDYAWVEUSRKX"}, "notch": ["Z"],
-                        "IIIC": {"alphabet": "UQNTLSZFMREHDPXKIBVYGJCWOA"}, "notch": ["Z"],
+                        "IC": {"alphabet": "DMTWSILRUYQNKFEJCAZBPGXOHV", "notch": ["Z"]},
+                        "IIC": {"alphabet": "HQZGPJTMOBLNCIFDYAWVEUSRKX", "notch": ["Z"]},
+                        "IIIC": {"alphabet": "UQNTLSZFMREHDPXKIBVYGJCWOA", "notch": ["Z"]},
                 }
-                kwargs["ukw_map"] = None
-                kwargs["etw_map"] = None
+                kwargs["ukw_map"] = {}
+                kwargs["etw_map"] = {}
                 kwargs["year"] = 1924
                 kwargs["max_rotors"] = 3
 
             case "Rocket":
                 kwargs["rotors_map"] = {
-                        "I": {"alphabet": "JGDQOXUSCAMIFRVTPNEWKBLZYH"}, "notch": ["Z"],
-                        "II": {"alphabet": "NTZPSFBOKMWRCJDIVLAEYUXHGQ"}, "notch": ["Z"],
-                        "III": {"alphabet": "JVIUBHTCDYAKEQZPOSGXNRMWFL"}, "notch": ["Z"],
+                        "I": {"alphabet": "JGDQOXUSCAMIFRVTPNEWKBLZYH", "notch": ["Z"]},
+                        "II": {"alphabet": "NTZPSFBOKMWRCJDIVLAEYUXHGQ", "notch": ["Z"]},
+                        "III": {"alphabet": "JVIUBHTCDYAKEQZPOSGXNRMWFL", "notch": ["Z"]},
                 }
                 kwargs["ukw_map"] = {
                     "UKW": {"alphabet": "QYHOGNECVPUZTFDJAXWMKISRBL"},
@@ -34,9 +34,9 @@ class EnigmaFactory:
 
             case "Swiss":
                     kwargs["rotors_map"] = {
-                        "I-K": {"alphabet": "PEZUOHXSCVFMTBGLRINQJWAYDK"}, "notch": ["Z"],
-                        "II-K": {"alphabet": "ZOUESYDKFWPCIQXHMVBLGNJRAT"}, "notch": ["Z"],
-                        "III-K": {"alphabet": "EHRVXGAOBQUSIMZFLYNWKTPDJC"}, "notch": ["Z"],
+                        "I-K": {"alphabet": "PEZUOHXSCVFMTBGLRINQJWAYDK", "notch": ["Z"]},
+                        "II-K": {"alphabet": "ZOUESYDKFWPCIQXHMVBLGNJRAT", "notch": ["Z"]},
+                        "III-K": {"alphabet": "EHRVXGAOBQUSIMZFLYNWKTPDJC", "notch": ["Z"]},
                     }
                     kwargs["ukw_map"] = {
                         "UKW-K": {"alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"},
@@ -58,7 +58,7 @@ class EnigmaFactory:
                         "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
                         "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
                     }
-                    kwargs["etw_map"] = None
+                    kwargs["etw_map"] = {}
                     kwargs["year"] = 1938
                     kwargs["max_rotors"] = 3
 
@@ -77,10 +77,8 @@ class EnigmaFactory:
                         "A": {"alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"},
                         "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
                         "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
-                        "BETA": {"alphabet": "LEYJVCNIXWPBQMDRTAKZGFUHOS"},
-                        "GAMMA": {"alphabet": "FSOKANUERHMBTIYCWLQPZXVGJD"},
                     }
-                    kwargs["etw_map"] = None
+                    kwargs["etw_map"] = {}
                     kwargs["year"] = 1938
                     kwargs["max_rotors"] = 4
 
@@ -99,7 +97,7 @@ class EnigmaFactory:
                         "A-Thin": {"alphabet": "ENKQAUYWJICOPBLMDXZVFTHRGS"},
                         "B-Thin": {"alphabet": "RDOBJNTKVEHMLFCWZAXGYIPSUQ"},
                     }
-                    kwargs["etw_map"] = None
+                    kwargs["etw_map"] = {}
                     kwargs["year"] = 1939
                     kwargs["max_rotors"] = 4
 
@@ -110,16 +108,9 @@ class EnigmaFactory:
         kwargs["model"] = model
         return Enigma(**kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Class used to create historically accurate Enigma machines. Available models: {', '.join(self.available_models)}"
 
     @property
-    def available_models(self):
+    def available_models(self) -> list[str]:
         return ["Commercial", "Rocket", "Swiss", "M3", "M4", "M4-Thin"]
-
-def main():
-    factory = EnigmaFactory()
-    e = factory.createEnigma()
-
-if __name__ == "__main__":
-    main()
