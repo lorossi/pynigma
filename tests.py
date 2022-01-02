@@ -1,5 +1,5 @@
 from enigma import Enigma
-from enigmafactory import EnigmaFactory
+from enigmafactory import EnigmaFactory, CustomEnigmaFactory
 
 from random import randint, seed, choice, shuffle
 from time import time
@@ -8,8 +8,9 @@ from string import ascii_uppercase
 import unittest
 
 
-STRING_LENGTH = 1000
-TESTS_NUM = 250
+STRING_LENGTH = 100
+LONG_STRING_LENGTH = 5000
+TESTS_NUM = 500
 
 
 class TestEnigma(unittest.TestCase):
@@ -32,21 +33,79 @@ class TestEnigma(unittest.TestCase):
     def _random_string(self, length: int = 3) -> list[str, str]:
         return "".join([chr(randint(0, 25) + 65) for x in range(length)])
 
-    def _simple_encode(self, a: str, format_output: bool = False) -> tuple[str, str]:
+    def _random_alphabet(self) -> str:
+        letters = [x for x in ascii_uppercase]
+        shuffle(letters)
+        return "".join(letters)
+
+    def _random_stator(self) -> str:
+        letters = [x for x in ascii_uppercase]
+        shuffle(letters)
+
+        pairs = []
+        for x in range(0, len(letters), 2):
+            pairs.append((letters[x], letters[x + 1]))
+        pairs.sort(key=lambda x: x[0])
+
+        stator = [None for _ in range(26)]
+
+        for p in pairs:
+            start = ord(p[0]) - 65
+            end = ord(p[1]) - 65
+            stator[start] = p[1]
+            stator[end] = p[0]
+
+        return "".join(stator)
+
+    def _random_notch(self, length: int = 1) -> list[str]:
+        letters = [x for x in ascii_uppercase]
+        shuffle(letters)
+        notch = []
+        for _ in range(length):
+            notch.append(letters.pop())
+        return notch
+
+    def _simple_encode(
+        self, clear: str, format_output: bool = False
+    ) -> tuple[str, str]:
         e = Enigma()
         e.addRotor("I", "A")
         e.addRotor("II", "A")
         e.addRotor("III", "A")
         e.setUKW("A")
 
-        encoded = e.encode(a, format_output)
+        encoded = e.encode(clear, format_output)
         e.setRotorsPositions("AAA")
         decoded = e.encode(encoded)
 
         if not format_output:
-            return a.upper(), decoded
+            return clear.upper(), decoded
 
-        return e._formatOutput(a.upper()), decoded
+        return e._formatOutput(clear.upper()), decoded
+
+    def _hard_encode(
+        self, length: int = STRING_LENGTH, max_rotors: int = 10, plugs: bool = False
+    ) -> tuple[str, str]:
+        e = Enigma()
+
+        for _ in range(randint(3, max_rotors)):
+            e.addRotor(choice(e.available_rotors))
+
+        e.setUKW(choice(e.available_UKWs))
+
+        pos = self._random_positions(len(e._rotors))
+        clear = self._random_string(length)
+
+        if plugs:
+            e.setPlugboard(*self._random_plugs())
+
+        e.setRotorsPositions(pos)
+        encoded = e.encode(clear)
+
+        e.setRotorsPositions(pos)
+        decoded = e.encode(encoded)
+
+        return clear, decoded
 
     def test_create_enigma(self):
         e = Enigma()
@@ -171,74 +230,27 @@ class TestEnigma(unittest.TestCase):
         seed(time())
 
         for _ in range(TESTS_NUM):
-            e = Enigma()
-
-            for _ in range(randint(3, 10)):
-                e.addRotor(choice(e.available_rotors))
-
-            e.setUKW(choice(e.available_UKWs))
-
-            pos = self._random_positions(len(e._rotors))
-            clear = self._random_string(STRING_LENGTH)
-
-            e.setRotorsPositions(pos)
-            encoded = e.encode(clear)
-
-            e.setRotorsPositions(pos)
-            decoded = e.encode(encoded)
-
-            self.assertEqual(decoded, clear)
+            self.assertEqual(*self._hard_encode())
 
     def test_random_encoding_with_plugs(self):
         seed(time())
 
         for _ in range(TESTS_NUM):
-            e = Enigma()
-
-            for _ in range(randint(3, 10)):
-                e.addRotor(choice(e.available_rotors))
-
-            e.setUKW(choice(e.available_UKWs))
-            e.setPlugboard(*self._random_plugs())
-
-            pos = self._random_positions(len(e._rotors))
-            clear = self._random_string(STRING_LENGTH)
-
-            e.setRotorsPositions(pos)
-            encoded = e.encode(clear)
-
-            e.setRotorsPositions(pos)
-            decoded = e.encode(encoded)
-
-            self.assertEqual(decoded, clear)
+            self.assertEqual(*self._hard_encode(plugs=True))
 
     def test_extremely_long_strings(self):
         seed(time())
-        e = Enigma()
 
-        for _ in range(100):
-            e.addRotor(choice(e.available_rotors))
-
-        e.setUKW(e.available_UKWs[0])
-        e.setPlugboard(*self._random_plugs())
-
-        pos = self._random_positions(100)
-        clear = self._random_string(1000)
-
-        e.setRotorsPositions(pos)
-        encoded = e.encode(clear)
-
-        e.setRotorsPositions(pos)
-        decoded = e.encode(encoded)
-
-        self.assertEqual(decoded, clear)
+        self.assertEqual(
+            *self._hard_encode(plugs=True, length=LONG_STRING_LENGTH, max_rotors=100)
+        )
 
     def test_factory(self):
-        factory = EnigmaFactory()
-        settings = factory._settings
+        f = EnigmaFactory()
+        settings = f._settings
 
-        for model in factory.available_models:
-            e = factory.createEnigma(model)
+        for model in f.available_models:
+            e = f.createEnigma(model)
             self.assertEqual(e.model, model)
             self.assertEqual(e.year, settings[e.model]["year"])
             self.assertEqual(settings[e.model]["max_rotors"], e.max_rotors)
@@ -252,7 +264,7 @@ class TestEnigma(unittest.TestCase):
                 [k for k in settings[e.model]["etw_map"].keys()], e.available_ETWs
             )
 
-        e = factory.createEnigma("M4")
+        e = f.createEnigma("M4")
         with self.assertRaises(Exception):
             e.setRotors("I", "II", "III", "IV", "V", "VI", "VII")
 
@@ -263,11 +275,11 @@ class TestEnigma(unittest.TestCase):
             e.setUKW("Z")
 
         with self.assertRaises(Exception):
-            factory.createEnigma("British")
+            f.createEnigma("British")
 
-        for model in factory.available_models:
+        for model in f.available_models:
             for _ in range(TESTS_NUM):
-                e = factory.createEnigma(model)
+                e = f.createEnigma(model)
 
                 for _ in range(e.max_rotors):
                     e.addRotor(choice(e.available_rotors))
@@ -288,6 +300,38 @@ class TestEnigma(unittest.TestCase):
                 decoded = e.encode(encoded)
 
                 self.assertEqual(decoded, clear)
+
+    def test_custom_factory(self):
+        f = CustomEnigmaFactory()
+
+        for _ in range(TESTS_NUM):
+            for x in range(randint(3, 10)):
+                f.addCustomRotor(
+                    str(x), self._random_alphabet(), self._random_notch(length=2)
+                )
+
+            f.addCustomETW("A", self._random_stator())
+            f.addCustomUKW("B", self._random_stator())
+
+            e = f.createCustomEnigma()
+
+            for _ in range(5):
+                e.addRotor(choice(e.available_rotors))
+
+            e.setETW("A")
+            e.setUKW("B")
+            e.setPlugboard(*self._random_plugs())
+
+            pos = self._random_positions(len(e._rotors))
+            clear = self._random_string(STRING_LENGTH)
+
+            e.setRotorsPositions(pos)
+            encoded = e.encode(clear)
+
+            e.setRotorsPositions(pos)
+            decoded = e.encode(encoded)
+
+            self.assertEqual(decoded, clear)
 
 
 if __name__ == "__main__":
