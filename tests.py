@@ -1,21 +1,24 @@
 from enigma import Enigma
 from enigmafactory import EnigmaFactory, CustomEnigmaFactory
 
-from random import randint, seed, choice, shuffle
-from time import time
 from string import ascii_uppercase
+from datetime import datetime
+from random import randint, seed, choice, shuffle
 
 import unittest
 
 
-STRING_LENGTH = 100
+STRING_LENGTH = 200
 LONG_STRING_LENGTH = 5000
-TESTS_NUM = 500
+TESTS_NUM = 1000
 
 
 class TestEnigma(unittest.TestCase):
+    def _random_seed(self) -> None:
+        seed(datetime.timestamp(datetime.now()))
+
     def _random_positions(self, rotors: int = 3) -> str:
-        return "".join([chr(randint(0, 25) + 65) for _ in range(rotors)])
+        return "".join(chr(randint(0, 25) + 65) for _ in range(rotors))
 
     def _random_plugs(self) -> list[str]:
         alphabet = [c for c in ascii_uppercase]
@@ -31,7 +34,7 @@ class TestEnigma(unittest.TestCase):
         return plugs
 
     def _random_string(self, length: int = 3) -> list[str, str]:
-        return "".join([chr(randint(0, 25) + 65) for x in range(length)])
+        return "".join(chr(randint(0, 25) + 65) for x in range(length))
 
     def _random_alphabet(self) -> str:
         letters = [x for x in ascii_uppercase]
@@ -111,7 +114,7 @@ class TestEnigma(unittest.TestCase):
 
     def test_create_enigma(self):
         e = Enigma()
-        self.assertEqual(e.year, 2022)
+        self.assertEqual(e.year, datetime.now().year)
         self.assertEqual(e.model, "Custom")
 
     def test_add_rotors(self):
@@ -245,19 +248,19 @@ class TestEnigma(unittest.TestCase):
         )
 
     def test_random_encoding(self):
-        seed(time())
+        self._random_seed()
 
         for _ in range(TESTS_NUM):
             self.assertEqual(*self._hard_encode())
 
     def test_random_encoding_with_plugs(self):
-        seed(time())
+        self._random_seed()
 
         for _ in range(TESTS_NUM):
             self.assertEqual(*self._hard_encode(plugs=True))
 
     def test_extremely_long_strings(self):
-        seed(time())
+        self._random_seed()
 
         self.assertEqual(
             *self._hard_encode(plugs=True, length=LONG_STRING_LENGTH, max_rotors=100)
@@ -322,22 +325,30 @@ class TestEnigma(unittest.TestCase):
     def test_custom_factory(self):
         f = CustomEnigmaFactory()
 
+        with self.assertRaises(Exception):
+            f.setCustomYear("ABCD")
+
         for _ in range(TESTS_NUM):
-            for x in range(randint(3, 10)):
+            max_rotors = randint(3, 10)
+
+            f.setMaxRotors(max_rotors)
+
+            for x in range(max_rotors):
                 f.addCustomRotor(
                     str(x), self._random_alphabet(), self._random_notch(length=2)
                 )
 
-            f.addCustomETW("A", self._random_stator())
-            f.addCustomUKW("B", self._random_stator())
+            for _ in range(5):
+                f.addCustomETW(self._random_string(), self._random_stator())
+                f.addCustomUKW(self._random_string(), self._random_stator())
 
             e = f.createCustomEnigma()
 
-            for _ in range(5):
+            for _ in range(e.max_rotors):
                 e.addRotor(choice(e.available_rotors))
 
-            e.setETW("A")
-            e.setUKW("B")
+            e.setETW(choice(e.available_ETWs))
+            e.setUKW(choice(e.available_UKWs))
             e.setPlugboard(*self._random_plugs())
 
             pos = self._random_positions(len(e._rotors))

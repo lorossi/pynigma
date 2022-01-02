@@ -27,29 +27,49 @@ class EnigmaFactory:
 
 class CustomEnigmaFactory:
     def __init__(self) -> None:
-        self._custom_rotors = {}
-        self._custom_etw = {}
-        self._custom_ukw = {}
+        self._initSettings()
 
     def __str__(self) -> str:
-        return f"Class used to create custom Enigma machines."
+        return (
+            f"Class used to create custom Enigma machines. "
+            f"Current settings: {ujson.dumps(self._settings, ensure_ascii=True, sort_keys=True)}"
+        )
+
+    def _initSettings(self) -> None:
+        self._settings = {
+            "rotors_map": {},
+            "ukw_map": {},
+            "etw_map": {},
+            "max_rotors": None,
+            "model": None,
+            "year": None,
+        }
 
     def createCustomEnigma(self) -> Enigma:
-        e = Enigma(
-            rotors_map=self._custom_rotors,
-            etw_map=self._custom_etw,
-            ukw_map=self._custom_ukw,
-        )
-        self._custom_rotors = {}
-        self._custom_etw = {}
-        self._custom_ukw = {}
+        e = Enigma(**self._settings)
+        self._initSettings()
         return e
 
     def addCustomETW(self, model: str, alphabet: str) -> None:
-        self._custom_etw[model] = {"alphabet": alphabet}
+        self._settings["etw_map"][model] = {"alphabet": alphabet}
 
     def addCustomUKW(self, model: str, alphabet: str) -> None:
-        self._custom_ukw[model] = {"alphabet": alphabet}
+        self._settings["ukw_map"][model] = {"alphabet": alphabet}
 
     def addCustomRotor(self, model: str, alphabet: str, notch: list[str]) -> None:
-        self._custom_rotors[model] = {"alphabet": alphabet, "notch": [n for n in notch]}
+        self._settings["rotors_map"][model] = {
+            "alphabet": alphabet,
+            "notch": [n for n in notch],
+        }
+
+    def setCustomModel(self, model: str) -> None:
+        self._settings["model"] = model
+
+    def setCustomYear(self, year: int) -> None:
+        if not isinstance(year, int):
+            raise ValueError("Year is not a number")
+
+        self._settings["year"] = year
+
+    def setMaxRotors(self, max_rotors: int) -> None:
+        self._settings["max_rotors"] = max_rotors

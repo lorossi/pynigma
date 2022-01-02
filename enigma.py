@@ -1,5 +1,6 @@
-from collections import deque
 from copy import deepcopy
+from datetime import datetime
+from collections import deque
 from string import ascii_letters, ascii_uppercase
 
 
@@ -180,10 +181,11 @@ class Enigma:
     def __str__(self) -> str:
         return (
             f"Enigma machine model {self.model}, built in {self.year}. "
-            f"Current ETW: {self._etw if self._etw else 'N/A'}. "
-            f"Current UKW: {self._ukw if self._ukw else 'N/A'}. "
-            f"Current rotors position: {self.rotors_position}. "
-            f"Current plugboard: {self.plugboard} "
+            f"Current ETW: {self.current_ETW if self.current_ETW else 'not set'}. "
+            f"Current UKW: {self.current_UKW if self.current_UKW else 'not set'}. "
+            f"Current rotors: {self.current_rotors if self.current_rotors else 'not set'}. "
+            f"Current rotors position: {self.rotors_position if self.rotors_position else 'not set'}. "
+            f"Current plugboard: {self.plugboard if self.plugboard else 'not set'} "
         )
 
     def __init__(self, **kwargs) -> None:
@@ -195,7 +197,7 @@ class Enigma:
             etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to M3 ETW.
             max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
             model (Optional[str]): name of the model of the machine. Defaults to "Custom".
-            year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
+            year (Optional[int]): year of manifacture of the machine. Defaults to current year.
         """
 
         if kwargs.get("etw_map") or isinstance(kwargs.get("etw_map"), dict):
@@ -226,7 +228,7 @@ class Enigma:
             }
 
         self._model = kwargs.get("model", "Custom")
-        self._year = kwargs.get("year", 2022)
+        self._year = kwargs.get("year", self._currentYear())
         self._max_rotors = kwargs.get("max_rotors")
         self._rotors = []
         self._etw = None
@@ -462,40 +464,116 @@ class Enigma:
                 self._rotors[x].step()
                 self._rotors[x - 1].step()
 
+    def _currentYear(self) -> int:
+        """Returns the current year.
+        Pretty useless NGL. But it's for custom enigma creation.
+
+        Returns:
+            int
+        """
+        return datetime.now().year
+
     @property
     def rotors_position(self) -> str:
+        """Return  current rotors position as a string.
+
+        Returns:
+            str
+        """
         return "".join(r.position for r in self._rotors)
 
     @property
+    def current_rotors(self) -> str:
+        """Returns the models of the currently used rotors.
+
+        Returns:
+            str
+        """
+        return ", ".join(r.model for r in self._rotors)
+
+    @property
     def available_rotors(self) -> list[str]:
+        """Returns list of available rotors for the current machine.
+
+        Returns:
+            list[str]
+        """
         return [r for r in self._rotors_map.keys()]
 
     @property
-    def plugboard(self) -> str:
-        return ["".join(p[x] for x in range(2)) for p in self._plugboard]
-
-    @property
     def available_UKWs(self) -> list[str]:
+        """Returns list of available UKWs for the current machine.
+
+        Returns:
+            list[str]
+        """
         if self._ukw_map:
             return [u for u in self._ukw_map.keys()]
         return []
 
     @property
+    def current_UKW(self) -> str:
+        """Returns the model of the currently used UKW
+
+        Returns:
+            str
+        """
+        return self._ukw.model
+
+    @property
     def available_ETWs(self) -> list[str]:
+        """Returns list of available ETWs for the current machine.
+
+        Returns:
+            list[str]
+        """
         if self._etw_map:
             return [e for e in self._etw_map.keys()]
         return []
 
     @property
+    def current_ETW(self) -> str:
+        """Returns the model of the currently used ETW
+
+        Returns:
+            str
+        """
+        return self._etw.model
+
+    @property
+    def plugboard(self) -> str:
+        """Returns the current plugboard as a string.
+
+        Returns:
+            str
+        """
+        return ["".join(p[x] for x in range(2)) for p in self._plugboard]
+
+    @property
     def max_rotors(self) -> int:
+        """Returns the maximum number of allowed rotors on the current machine.
+
+        Returns:
+            int
+        """
         if self._max_rotors:
             return self._max_rotors
         return -1
 
     @property
     def year(self) -> int:
+        """Returns the manufacturing year of the current machine.
+
+        Returns:
+            int
+        """
         return self._year
 
     @property
     def model(self) -> str:
+        """Returns model name of the current machine.
+
+        Returns:
+            str
+        """
         return self._model
