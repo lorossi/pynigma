@@ -1,0 +1,584 @@
+{
+  "D": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "LPGSZMHAEOQKVXRFYBUTNICJDW",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
+        "notch": ["E"]
+      },
+      "III": {
+        "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
+        "notch": ["N"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1926,
+    "max_rotors": 3
+  },
+  "I": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+        "notch": ["D"]
+      },
+      "IV": {
+        "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+        "notch": ["R"]
+      },
+      "V": {
+        "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
+        "notch": ["H"]
+      }
+    },
+    "ukw_map": {
+      "UKW-A": {
+        "alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"
+      },
+      "UKW-B": {
+        "alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+      },
+      "UKW-C": {
+        "alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    "year": 1938,
+    "max_rotors": 3
+  },
+  "Norway": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "WTOKASUYVRBXJHQCPZEFMDINLG",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "GJLPUBSWEMCTQVHXAOFZDRKYNI",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "JWFMHNBPUSDYTIXVZGRQLAOEKC",
+        "notch": ["D"]
+      },
+      "IV": {
+        "alphabet": "FGZJMVXEPBWSHQTLIUDYKCNRAO",
+        "notch": ["R"]
+      },
+      "V": {
+        "alphabet": "HEJXQOTZBVFDASCILWPGYNMURK",
+        "notch": ["H"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "MOWJYPUXNDSRAIBFVLKZGQCHET"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    "year": 1939,
+    "max_rotors": 3
+  },
+  "Sonder": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "VEOSIRZUJDQCKGWYPNXAFLTHMB",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "UEMOATQLSHPKCYFWJZBGVXINDR",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "TZHXMBSIPNURJFDKEQVCWGLAOY",
+        "notch": ["D"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "CIAGSNDRBYTPZFULVHEKOQXWJM"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    "year": 1939,
+    "max_rotors": 3
+  },
+  "M3": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+        "notch": ["D"]
+      },
+      "IV": {
+        "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+        "notch": ["R"]
+      },
+      "V": {
+        "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
+        "notch": ["H"]
+      },
+      "VI": {
+        "alphabet": "JPGVOUMFYQBENHZRDKASXLICTW",
+        "notch": ["H", "U"]
+      },
+      "VII": {
+        "alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT",
+        "notch": ["H", "U"]
+      },
+      "VIII": {
+        "alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV",
+        "notch": ["H", "U"]
+      }
+    },
+    "ukw_map": {
+      "UKW-B": {
+        "alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"
+      },
+      "UKW-C": {
+        "alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    "year": 1939,
+    "max_rotors": 3
+  },
+  "M4": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+        "notch": ["D"]
+      },
+      "IV": {
+        "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+        "notch": ["R"]
+      },
+      "V": {
+        "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
+        "notch": ["H"]
+      },
+      "VI": {
+        "alphabet": "JPGVOUMFYQBENHZRDKASXLICTW",
+        "notch": ["H", "U"]
+      },
+      "VII": {
+        "alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT",
+        "notch": ["H", "U"]
+      },
+      "VIII": {
+        "alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV",
+        "notch": ["H", "U"]
+      }
+    },
+    "ukw_map": {
+      "UKW-B": {
+        "alphabet": "ENKQAUYWJICOPBLMDXZVFTHRGS"
+      },
+      "UKW-C": {
+        "alphabet": "RDOBJNTKVEHMLFCWZAXGYIPSUQ"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      }
+    },
+    "year": 1942,
+    "max_rotors": 4
+  },
+  "G": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "LPGSZMHAEOQKVXRFYBUTNICJDW",
+        "notch": [
+          "A",
+          "C",
+          "D",
+          "E",
+          "H",
+          "I",
+          "J",
+          "K",
+          "M",
+          "N",
+          "O",
+          "Q",
+          "S",
+          "T",
+          "W",
+          "X",
+          "Y"
+        ]
+      },
+      "II": {
+        "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
+        "notch": [
+          "A",
+          "B",
+          "D",
+          "G",
+          "H",
+          "I",
+          "K",
+          "L",
+          "N",
+          "O",
+          "P",
+          "S",
+          "U",
+          "V",
+          "Y"
+        ]
+      },
+      "III": {
+        "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
+        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1931,
+    "max_rotors": 3
+  },
+  "G-312": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "DMTWSILRUYQNKFEJCAZBPGXOHV",
+        "notch": [
+          "A",
+          "C",
+          "D",
+          "E",
+          "H",
+          "I",
+          "J",
+          "K",
+          "M",
+          "N",
+          "O",
+          "Q",
+          "S",
+          "T",
+          "W",
+          "X",
+          "Y"
+        ]
+      },
+      "II": {
+        "alphabet": "HQZGPJTMOBLNCIFDYAWVEUSRKX",
+        "notch": [
+          "A",
+          "B",
+          "D",
+          "G",
+          "H",
+          "I",
+          "K",
+          "L",
+          "N",
+          "O",
+          "P",
+          "S",
+          "U",
+          "V",
+          "Y"
+        ]
+      },
+      "III": {
+        "alphabet": "UQNTLSZFMREHDPXKIBVYGJCWOA",
+        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "RULQMZJSYGOCETKWDAHNBXPVIF"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1931,
+    "max_rotors": 3
+  },
+  "G-260": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "RCSPBLKQAUMHWYTIFZVGOJNEXD",
+        "notch": [
+          "A",
+          "C",
+          "D",
+          "E",
+          "H",
+          "I",
+          "J",
+          "K",
+          "M",
+          "N",
+          "O",
+          "Q",
+          "S",
+          "T",
+          "W",
+          "X",
+          "Y"
+        ]
+      },
+      "II": {
+        "alphabet": "WCMIBVPJXAROSGNDLZKEYHUFQT",
+        "notch": [
+          "A",
+          "B",
+          "D",
+          "G",
+          "H",
+          "I",
+          "K",
+          "L",
+          "N",
+          "O",
+          "P",
+          "S",
+          "U",
+          "V",
+          "Y"
+        ]
+      },
+      "III": {
+        "alphabet": "FVDHZELSQMAXOKYIWPGCBUJTNR",
+        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1931,
+    "max_rotors": 3
+  },
+  "K": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "LPGSZMHAEOQKVXRFYBUTNICJDW",
+        "notch": ["G"]
+      },
+      "II": {
+        "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
+        "notch": ["V"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1927,
+    "max_rotors": 3
+  },
+  "Swiss-K": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "PEZUOHXSCVFMTBGLRINQJWAYDK",
+        "notch": ["G"]
+      },
+      "II": {
+        "alphabet": "ZOUESYDKFWPCIQXHMVBLGNJRAT",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "EHRVXGAOBQUSIMZFLYNWKTPDJC",
+        "notch": ["V"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "IMETCGFRAYSQBZXWLHKDVUPOJN"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1927,
+    "max_rotors": 3
+  },
+  "KD": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "VEZIOJCXKYDUNTWAPLQGBHSFMR",
+        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+      },
+      "II": {
+        "alphabet": "HGRBSJZETDLVPMQYCXAOKINFUW",
+        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+      },
+      "III": {
+        "alphabet": "NWLHXGRBYOJSAZDVTPKFQMEUIC",
+        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "NSUOMKLIHZFGEADVXWBYCPRQTJ"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1944,
+    "max_rotors": 3
+  },
+  "Railway": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "JGDQOXUSCAMIFRVTPNEWKBLZYH",
+        "notch": ["Y"]
+      },
+      "II": {
+        "alphabet": "NTZPSFBOKMWRCJDIVLAEYUXHGQ",
+        "notch": ["M"]
+      },
+      "III": {
+        "alphabet": "JVIUBHTCDYAKEQZPOSGXNRMWFL",
+        "notch": ["D"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "QYHOGNECVPUZTFDJAXWMKISRBL"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "QWERTZUIOASDFGHJKPYXCVBNML"
+      }
+    },
+    "year": 1940,
+    "max_rotors": 3
+  },
+  "T": {
+    "rotors_map": {
+      "I": {
+        "alphabet": "KPTYUELOCVGRFQDANJMBSWHZXI",
+        "notch": ["E", "H", "M", "S", "Y"]
+      },
+      "II": {
+        "alphabet": "UPHZLWEQMTDJXCAKSOIGVBYFNR",
+        "notch": ["E", "H", "N", "T", "Z"]
+      },
+      "III": {
+        "alphabet": "QUDLYRFEKONVZAXWHMGPJBSICT",
+        "notch": ["E", "H", "M", "S", "Y"]
+      },
+      "IV": {
+        "alphabet": "CIWTBKXNRESPFLYDAGVHQUOJZM",
+        "notch": ["E", "H", "N", "T", "Z"]
+      },
+      "V": {
+        "alphabet": "UAXGISNJBVERDYLFZWTPCKOHMQ",
+        "notch": ["G", "K", "N", "S", "Z"]
+      },
+      "VI": {
+        "alphabet": "XFUZGALVHCNYSEWQTDMRBKPIOJ",
+        "notch": ["F", "M", "Q", "U", "Y"]
+      },
+      "VII": {
+        "alphabet": "BJVFTXPLNAYOZIKWGDQERUCHSM",
+        "notch": ["G", "K", "N", "S", "Z"]
+      },
+      "VIII": {
+        "alphabet": "YMTPNZHWKODAJXELUQVGCBISFR",
+        "notch": ["F", "M", "Q", "U", "Y"]
+      }
+    },
+    "ukw_map": {
+      "UKW": {
+        "alphabet": "GEKPBTAUMOCNILJDXZYFHWVQSR"
+      }
+    },
+    "etw_map": {
+      "ETW": {
+        "alphabet": "KZROUQHYAIGBLWVSTDXFPNMCJE"
+      }
+    },
+    "year": 1939,
+    "max_rotors": 3
+  }
+}
