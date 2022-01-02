@@ -72,6 +72,11 @@ class EnigmaFactory:
                         "notch": ["Z", "M"],
                     },
                 },
+                "ukw_map": {
+                    "A": {"alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"},
+                    "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
+                    "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
+                },
                 "etw_map": {},
                 "year": 1938,
                 "max_rotors": 4,
@@ -109,9 +114,9 @@ class EnigmaFactory:
     def __str__(self) -> str:
         return f"Class used to create historically accurate Enigma machines. Available models: {', '.join(self.available_models)}"
 
-    def createEnigma(self, model: str = "M3") -> Enigma:
+    def createEnigma(self, model: str) -> Enigma:
         if self._settings.get(model):
-            return Enigma(model, **self._settings[model])
+            return Enigma(model=model, **self._settings[model])
 
         raise ValueError(
             f"Invalid model. Valid models are: {', '.join(self.available_models)}"

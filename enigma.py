@@ -34,6 +34,8 @@ class Rotor:
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
 
+        # find a smarter way to do this, maybe using dictionaries?
+        # there's no much sense in looking at the index of a letter to go right
         self._alphabet = deque([a.upper() for a in alphabet])
 
         self._notch = [ord(n.upper()) - 65 for n in notch]
@@ -152,13 +154,7 @@ class Rotor:
         return self._model
 
 
-class UKW(Rotor):
-    def __init__(self, alphabet: str, model: str = None):
-        self._alphabet = deque([a for a in alphabet])
-        self._model = model
-
-
-class ETW(Rotor):
+class Stator(Rotor):
     def __init__(self, alphabet: str, model: str = None):
         self._alphabet = deque([a for a in alphabet])
         self._model = model
@@ -173,11 +169,8 @@ class Enigma:
             f"Current rotors position: {self.rotors_position}."
         )
 
-    def __init__(self, model="Custom", **kwargs) -> None:
+    def __init__(self, **kwargs) -> None:
         """Create a Enigma machine. With default settings, it generates a version similar to 1938 model M3.
-
-        Args:
-            model (str, optional): [description]. Defaults to "Custom".
 
         Keyword Args:
             rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
@@ -213,7 +206,7 @@ class Enigma:
                 "V": {"alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK", "notch": ["Z"]},
             }
 
-        self._model = model
+        self._model = kwargs.get("model", "Custom")
         self._year = kwargs.get("year", 2022)
         self._max_rotors = kwargs.get("max_rotors")
         self._rotors = []
@@ -247,6 +240,16 @@ class Enigma:
         except Exception:
             raise ValueError(f"Unknown rotor {rotor}")
 
+    def setRotors(self, *rotors: str) -> None:
+        """Sets a variable number of rotors according to their model.
+        Their starting positions are defaulted to "A".
+
+        Shorthand for self.addRotor() called multiple times.
+        """
+        self._rotors = []
+        for r in rotors:
+            self.addRotor(r, "A")
+
     def removeRotors(self) -> None:
         """Removes all rotors from the current machine."""
         self._rotors = []
@@ -269,16 +272,6 @@ class Enigma:
                 raise ValueError(f"Position {p} is not valid")
             self._rotors[x].position = p
 
-    def setRotors(self, *rotors: str) -> None:
-        """Sets a variable number of rotors according to their model.
-        Their starting positions are defaulted to "A".
-
-        Shorthand for self.addRotor() called multiple times.
-        """
-        self._rotors = []
-        for r in rotors:
-            self.addRotor(r, "A")
-
     def setUKW(self, ukw: str) -> None:
         """Set the UKW (reflector) according to its model.
 
@@ -289,7 +282,7 @@ class Enigma:
             ValueError: UKW model is not valid
         """
         try:
-            self._ukw = UKW(self._ukw_map[ukw]["alphabet"], model=ukw)
+            self._ukw = Stator(self._ukw_map[ukw]["alphabet"], model=ukw)
         except KeyError:
             raise ValueError(f"Unknown ukw {ukw}")
 
@@ -303,21 +296,41 @@ class Enigma:
             ValueError: ETW model is not valid
         """
         try:
-            self._etw = ETW(self._etw_map[etw]["alphabet"], model=etw)
+            self._etw = Stator(self._etw_map[etw]["alphabet"], model=etw)
         except KeyError:
             raise ValueError(f"Unknown ukw {etw}")
 
     def setPlugboard(self, *plugs: str) -> None:
+        """Set the plugboard for the current machine.
+
+        Raises:
+            ValueError: More than 10 plugs are provided
+            ValueError: Plugboards are not all in "AB" form
+        """
         if len(plugs) > 10:
             raise ValueError("Max 10 plugs are allowed")
 
-        for p in plugs:
-            if len(p) != 2:
-                raise Exception("Invalid plugs combinations")
+        if any(len(p) != 2 for p in plugs):
+            raise ValueError("Invalid plugs combinations")
 
         self._plugboard = [(x[0], x[1]) for x in plugs]
 
     def encode(self, clean: str, format_output: bool = False) -> str:
+        """Encodes a string using the current configuration of the machine.
+        Can output formatted strings.
+
+        Args:
+            clean (str): String to be encoded.
+            format_output (bool, optional): If True, groups the encoded strings into 5 characters words. Defaults to False.
+
+        Raises:
+            Exception: No rotors have been added
+            Exception: No UKWs have been set (if available)
+            Exception: No ETWs have been set (if available)
+
+        Returns:
+            str: Encoded string
+        """
         if not self._rotors:
             raise Exception("No rotors have been added")
         if self._ukw_map and not self._ukw:
@@ -466,11 +479,8 @@ class Enigma:
 
 
 def main():
-    e = Enigma()
-    e.addRotor("I")
-    e.setUKW("A")
-
-    print(e.encode("A"))
+    ...
+    print("This should not happen")
 
 
 if __name__ == "__main__":
