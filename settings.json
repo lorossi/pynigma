@@ -3,7 +3,7 @@
     "rotors_map": {
       "I": {
         "alphabet": "LPGSZMHAEOQKVXRFYBUTNICJDW",
-        "notch": ["Y"]
+        "notch": ["G"]
       },
       "II": {
         "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
@@ -11,7 +11,7 @@
       },
       "III": {
         "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
-        "notch": ["N"]
+        "notch": ["V"]
       }
     },
     "ukw_map": {
@@ -31,23 +31,23 @@
     "rotors_map": {
       "I": {
         "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
-        "notch": ["D"]
+        "notch": ["V"]
       },
       "IV": {
         "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
-        "notch": ["R"]
+        "notch": ["J"]
       },
       "V": {
         "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
-        "notch": ["H"]
+        "notch": ["Z"]
       }
     },
     "ukw_map": {
@@ -73,23 +73,23 @@
     "rotors_map": {
       "I": {
         "alphabet": "WTOKASUYVRBXJHQCPZEFMDINLG",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "GJLPUBSWEMCTQVHXAOFZDRKYNI",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "JWFMHNBPUSDYTIXVZGRQLAOEKC",
-        "notch": ["D"]
+        "notch": ["V"]
       },
       "IV": {
         "alphabet": "FGZJMVXEPBWSHQTLIUDYKCNRAO",
-        "notch": ["R"]
+        "notch": ["J"]
       },
       "V": {
         "alphabet": "HEJXQOTZBVFDASCILWPGYNMURK",
-        "notch": ["H"]
+        "notch": ["Z"]
       }
     },
     "ukw_map": {
@@ -109,15 +109,15 @@
     "rotors_map": {
       "I": {
         "alphabet": "VEOSIRZUJDQCKGWYPNXAFLTHMB",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "UEMOATQLSHPKCYFWJZBGVXINDR",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "TZHXMBSIPNURJFDKEQVCWGLAOY",
-        "notch": ["D"]
+        "notch": ["V"]
       }
     },
     "ukw_map": {
@@ -137,35 +137,35 @@
     "rotors_map": {
       "I": {
         "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
-        "notch": ["D"]
+        "notch": ["V"]
       },
       "IV": {
         "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
-        "notch": ["R"]
+        "notch": ["J"]
       },
       "V": {
         "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
-        "notch": ["H"]
+        "notch": ["Z"]
       },
       "VI": {
         "alphabet": "JPGVOUMFYQBENHZRDKASXLICTW",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       },
       "VII": {
         "alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       },
       "VIII": {
         "alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       }
     },
     "ukw_map": {
@@ -188,35 +188,35 @@
     "rotors_map": {
       "I": {
         "alphabet": "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "AJDKSIRUXBLHWTMCQGZNPYFVOE",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
-        "notch": ["D"]
+        "notch": ["V"]
       },
       "IV": {
         "alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB",
-        "notch": ["R"]
+        "notch": ["J"]
       },
       "V": {
         "alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK",
-        "notch": ["H"]
+        "notch": ["Z"]
       },
       "VI": {
         "alphabet": "JPGVOUMFYQBENHZRDKASXLICTW",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       },
       "VII": {
         "alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       },
       "VIII": {
         "alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV",
-        "notch": ["H", "U"]
+        "notch": ["Z", "M"]
       }
     },
     "ukw_map": {
@@ -240,48 +240,48 @@
       "I": {
         "alphabet": "LPGSZMHAEOQKVXRFYBUTNICJDW",
         "notch": [
-          "A",
-          "C",
-          "D",
-          "E",
-          "H",
-          "I",
-          "J",
-          "K",
-          "M",
-          "N",
-          "O",
-          "Q",
           "S",
-          "T",
+          "U",
+          "V",
           "W",
-          "X",
-          "Y"
+          "Z",
+          "A",
+          "B",
+          "C",
+          "E",
+          "F",
+          "G",
+          "I",
+          "K",
+          "L",
+          "O",
+          "P",
+          "Q"
         ]
       },
       "II": {
         "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
         "notch": [
+          "S",
+          "T",
+          "V",
+          "Y",
+          "Z",
           "A",
-          "B",
+          "C",
           "D",
+          "F",
           "G",
           "H",
-          "I",
           "K",
-          "L",
+          "M",
           "N",
-          "O",
-          "P",
-          "S",
-          "U",
-          "V",
-          "Y"
+          "Q"
         ]
       },
       "III": {
         "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
-        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+        "notch": ["U", "W", "X", "A", "E", "F", "H", "K", "M", "N", "R"]
       }
     },
     "ukw_map": {
@@ -302,48 +302,48 @@
       "I": {
         "alphabet": "DMTWSILRUYQNKFEJCAZBPGXOHV",
         "notch": [
-          "A",
-          "C",
-          "D",
-          "E",
-          "H",
-          "I",
-          "J",
-          "K",
-          "M",
-          "N",
-          "O",
-          "Q",
           "S",
-          "T",
+          "U",
+          "V",
           "W",
-          "X",
-          "Y"
+          "Z",
+          "A",
+          "B",
+          "C",
+          "E",
+          "F",
+          "G",
+          "I",
+          "K",
+          "L",
+          "O",
+          "P",
+          "Q"
         ]
       },
       "II": {
         "alphabet": "HQZGPJTMOBLNCIFDYAWVEUSRKX",
         "notch": [
+          "S",
+          "T",
+          "V",
+          "Y",
+          "Z",
           "A",
-          "B",
+          "C",
           "D",
+          "F",
           "G",
           "H",
-          "I",
           "K",
-          "L",
+          "M",
           "N",
-          "O",
-          "P",
-          "S",
-          "U",
-          "V",
-          "Y"
+          "Q"
         ]
       },
       "III": {
         "alphabet": "UQNTLSZFMREHDPXKIBVYGJCWOA",
-        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+        "notch": ["U", "W", "X", "A", "E", "F", "H", "K", "M", "N", "R"]
       }
     },
     "ukw_map": {
@@ -364,48 +364,48 @@
       "I": {
         "alphabet": "RCSPBLKQAUMHWYTIFZVGOJNEXD",
         "notch": [
-          "A",
-          "C",
-          "D",
-          "E",
-          "H",
-          "I",
-          "J",
-          "K",
-          "M",
-          "N",
-          "O",
-          "Q",
           "S",
-          "T",
+          "U",
+          "V",
           "W",
-          "X",
-          "Y"
+          "Z",
+          "A",
+          "B",
+          "C",
+          "E",
+          "F",
+          "G",
+          "I",
+          "K",
+          "L",
+          "O",
+          "P",
+          "Q"
         ]
       },
       "II": {
         "alphabet": "WCMIBVPJXAROSGNDLZKEYHUFQT",
         "notch": [
+          "S",
+          "T",
+          "V",
+          "Y",
+          "Z",
           "A",
-          "B",
+          "C",
           "D",
+          "F",
           "G",
           "H",
-          "I",
           "K",
-          "L",
+          "M",
           "N",
-          "O",
-          "P",
-          "S",
-          "U",
-          "V",
-          "Y"
+          "Q"
         ]
       },
       "III": {
         "alphabet": "FVDHZELSQMAXOKYIWPGCBUJTNR",
-        "notch": ["C", "E", "F", "I", "M", "N", "P", "S", "U", "V", "Z"]
+        "notch": ["U", "W", "X", "A", "E", "F", "H", "K", "M", "N", "R"]
       }
     },
     "ukw_map": {
@@ -429,7 +429,7 @@
       },
       "II": {
         "alphabet": "SLVGBTFXJQOHEWIRZYAMKPCNDU",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "CJGDPSHKTURAWZXFMYNQOBVLIE",
@@ -457,7 +457,7 @@
       },
       "II": {
         "alphabet": "ZOUESYDKFWPCIQXHMVBLGNJRAT",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "EHRVXGAOBQUSIMZFLYNWKTPDJC",
@@ -481,15 +481,15 @@
     "rotors_map": {
       "I": {
         "alphabet": "VEZIOJCXKYDUNTWAPLQGBHSFMR",
-        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+        "notch": ["S", "U", "Y", "A", "E", "H", "L", "N", "Q"]
       },
       "II": {
         "alphabet": "HGRBSJZETDLVPMQYCXAOKINFUW",
-        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+        "notch": ["S", "U", "Y", "A", "E", "H", "L", "N", "Q"]
       },
       "III": {
         "alphabet": "NWLHXGRBYOJSAZDVTPKFQMEUIC",
-        "notch": ["A", "C", "G", "I", "M", "P", "T", "V", "Y"]
+        "notch": ["S", "U", "Y", "A", "E", "H", "L", "N", "Q"]
       }
     },
     "ukw_map": {
@@ -509,15 +509,15 @@
     "rotors_map": {
       "I": {
         "alphabet": "JGDQOXUSCAMIFRVTPNEWKBLZYH",
-        "notch": ["Y"]
+        "notch": ["Q"]
       },
       "II": {
         "alphabet": "NTZPSFBOKMWRCJDIVLAEYUXHGQ",
-        "notch": ["M"]
+        "notch": ["E"]
       },
       "III": {
         "alphabet": "JVIUBHTCDYAKEQZPOSGXNRMWFL",
-        "notch": ["D"]
+        "notch": ["V"]
       }
     },
     "ukw_map": {
@@ -537,35 +537,35 @@
     "rotors_map": {
       "I": {
         "alphabet": "KPTYUELOCVGRFQDANJMBSWHZXI",
-        "notch": ["E", "H", "M", "S", "Y"]
+        "notch": ["W", "Z", "E", "K", "Q"]
       },
       "II": {
         "alphabet": "UPHZLWEQMTDJXCAKSOIGVBYFNR",
-        "notch": ["E", "H", "N", "T", "Z"]
+        "notch": ["W", "Z", "F", "L", "R"]
       },
       "III": {
         "alphabet": "QUDLYRFEKONVZAXWHMGPJBSICT",
-        "notch": ["E", "H", "M", "S", "Y"]
+        "notch": ["W", "Z", "E", "K", "Q"]
       },
       "IV": {
         "alphabet": "CIWTBKXNRESPFLYDAGVHQUOJZM",
-        "notch": ["E", "H", "N", "T", "Z"]
+        "notch": ["W", "Z", "F", "L", "R"]
       },
       "V": {
         "alphabet": "UAXGISNJBVERDYLFZWTPCKOHMQ",
-        "notch": ["G", "K", "N", "S", "Z"]
+        "notch": ["Y", "C", "F", "K", "R"]
       },
       "VI": {
         "alphabet": "XFUZGALVHCNYSEWQTDMRBKPIOJ",
-        "notch": ["F", "M", "Q", "U", "Y"]
+        "notch": ["X", "E", "I", "M", "Q"]
       },
       "VII": {
         "alphabet": "BJVFTXPLNAYOZIKWGDQERUCHSM",
-        "notch": ["G", "K", "N", "S", "Z"]
+        "notch": ["Y", "C", "F", "K", "R"]
       },
       "VIII": {
         "alphabet": "YMTPNZHWKODAJXELUQVGCBISFR",
-        "notch": ["F", "M", "Q", "U", "Y"]
+        "notch": ["X", "E", "I", "M", "Q"]
       }
     },
     "ukw_map": {

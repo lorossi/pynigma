@@ -190,9 +190,9 @@ class Enigma:
         """Create a Enigma machine. With default settings, it generates a version similar to 1938 model M3.
 
         Keyword Args:
-            rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors (see below).
-            ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 reflectors (see below).
-            etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to None.
+            rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors.
+            ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 UKWs.
+            etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to M3 ETW.
             max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
             model (Optional[str]): name of the model of the machine. Defaults to "Custom".
             year (Optional[int]): year of manifacture of the machine. Defaults to 2022.
@@ -201,15 +201,14 @@ class Enigma:
         if kwargs.get("etw_map") or isinstance(kwargs.get("etw_map"), dict):
             self._etw_map = deepcopy(kwargs["etw_map"])
         else:
-            self._etw_map = None
+            self._etw_map = {"ETW": {"alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ"}}
 
         if kwargs.get("ukw_map") or isinstance(kwargs.get("ukw_map"), dict):
             self._ukw_map = deepcopy(kwargs["ukw_map"])
         else:
             self._ukw_map = {
-                "A": {"alphabet": "EJMZALYXVBWFCRQUONTSPIKHGD"},
-                "B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
-                "C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
+                "UKW-B": {"alphabet": "YRUHQSLDPXNGOKMIEBFZCWVJAT"},
+                "UKW-C": {"alphabet": "FVPJIAOYEDRZXWGCTKUQSBNMHL"},
             }
 
         if kwargs.get("rotors_map"):
@@ -221,6 +220,9 @@ class Enigma:
                 "III": {"alphabet": "BDFHJLCPRTXVZNYEIWGAKMUSQO", "notch": ["V"]},
                 "IV": {"alphabet": "ESOVPZJAYQUIRHXLNFTGKDCMWB", "notch": ["J"]},
                 "V": {"alphabet": "VZBRGITYUPSDNHLXAWMJQOFECK", "notch": ["Z"]},
+                "VI": {"alphabet": "JPGVOUMFYQBENHZRDKASXLICTW", "notch": ["Z", "M"]},
+                "VII": {"alphabet": "NZJHGRCXMYSWBOUFAIVLPEKQDT", "notch": ["Z", "M"]},
+                "VIII": {"alphabet": "FKQHTLXOCBJSPDZRAMEWNIUYGV", "notch": ["Z", "M"]},
             }
 
         self._model = kwargs.get("model", "Custom")

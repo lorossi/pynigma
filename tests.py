@@ -72,7 +72,8 @@ class TestEnigma(unittest.TestCase):
         e.addRotor("I", "A")
         e.addRotor("II", "A")
         e.addRotor("III", "A")
-        e.setUKW("A")
+        e.setUKW(e.available_UKWs[0])
+        e.setETW(e.available_ETWs[0])
 
         encoded = e.encode(clear, format_output)
         e.setRotorsPositions("AAA")
@@ -92,6 +93,7 @@ class TestEnigma(unittest.TestCase):
             e.addRotor(choice(e.available_rotors))
 
         e.setUKW(choice(e.available_UKWs))
+        e.setETW(choice(e.available_ETWs))
 
         pos = self._random_positions(len(e._rotors))
         clear = self._random_string(length)
@@ -134,7 +136,7 @@ class TestEnigma(unittest.TestCase):
 
     def test_rotors_position(self):
         e = Enigma()
-        e.setUKW("A")
+        e.setUKW(e.available_UKWs[0])
         e.setRotors("I", "II", "III")
 
         for _ in range(TESTS_NUM):
@@ -150,6 +152,15 @@ class TestEnigma(unittest.TestCase):
 
         with self.assertRaises(Exception):
             e.setUKW("ASD")
+
+    def test_add_etw(self):
+        e = Enigma()
+
+        for u in e.available_ETWs:
+            e.setETW(u)
+
+        with self.assertRaises(Exception):
+            e.setETW("ASD")
 
     def test_set_plugboard(self):
         e = Enigma()
@@ -173,7 +184,7 @@ class TestEnigma(unittest.TestCase):
     def test_positions(self):
         e = Enigma()
         e.setRotors("I", "I", "I")
-        e.setUKW("A")
+        e.setUKW(e.available_UKWs[0])
         e.setRotorsPositions("ZZZ")
 
         self.assertEqual(e.rotors_position, "ZZZ")
@@ -193,7 +204,8 @@ class TestEnigma(unittest.TestCase):
     def test_double_stepping(self):
         e = Enigma()
         e.setRotors("I", "II", "III")
-        e.setUKW("A")
+        e.setUKW(e.available_UKWs[0])
+        e.setETW(e.available_ETWs[0])
         e.setRotorsPositions("ADT")
         positions = ["ADU", "ADV", "AEW", "BFX", "BFY"]
 
