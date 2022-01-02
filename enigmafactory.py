@@ -3,6 +3,7 @@ from enigma import Enigma
 
 class EnigmaFactory:
     def __init__(self) -> None:
+        # check this list for more settings https://www.cryptomuseum.com/crypto/enigma/wiring.htm
         self._settings = {
             "Commercial": {
                 "rotors_map": {
@@ -137,13 +138,21 @@ class CustomEnigmaFactory:
         return f"Class used to create custom Enigma machines."
 
     def createCustomEnigma(self) -> Enigma:
-        raise NotImplementedError
+        e = Enigma(
+            rotors_map=self._custom_rotors,
+            etw_map=self._custom_etw,
+            ukw_map=self._custom_ukw,
+        )
+        self._custom_rotors = {}
+        self._custom_etw = {}
+        self._custom_ukw = {}
+        return e
 
-    def addCustomETW(self, alphabet: str) -> None:
-        raise NotImplementedError
+    def addCustomETW(self, model: str, alphabet: str) -> None:
+        self._custom_etw[model] = {"alphabet": alphabet}
 
-    def addCustomUWK(self, alphabet: str) -> None:
-        raise NotImplementedError
+    def addCustomUKW(self, model: str, alphabet: str) -> None:
+        self._custom_ukw[model] = {"alphabet": alphabet}
 
-    def addCustomRotor(self, alphabet: str, notch: list[str]) -> None:
-        raise NotImplementedError()
+    def addCustomRotor(self, model: str, alphabet: str, notch: list[str]) -> None:
+        self._custom_rotors[model] = {"alphabet": alphabet, "notch": [n for n in notch]}
