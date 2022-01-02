@@ -45,6 +45,9 @@ class Rotor:
         self.step(self._position)
         self._stepped = False
 
+    def __str__(self) -> str:
+        return f"Alphabet: {''.join(self._alphabet)}. Position: {self._position}"
+
     def left(self, letter: str) -> str:
         """Move letter from right to left.
 
@@ -156,8 +159,21 @@ class Rotor:
 
 class Stator(Rotor):
     def __init__(self, alphabet: str, model: str = None):
+        # check if all letters are in the alphabet and if alphabet is valid
+        if len(alphabet) != 26 or any(
+            l not in alphabet.upper() for l in ascii_uppercase
+        ):
+            raise ValueError(f"Invalid stator alphabet ({alphabet})")
+
         self._alphabet = deque([a for a in alphabet])
         self._model = model
+
+        # each letter should be mapped to itself
+        if any(self.right(self.left(a)) != a for a in alphabet):
+            raise ValueError(f"Invalid stator alphabet ({alphabet})")
+
+    def __str__(self) -> str:
+        return f"Alphabet: {''.join(self._alphabet)}"
 
 
 class Enigma:
