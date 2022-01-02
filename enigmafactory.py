@@ -1,4 +1,4 @@
-from enigma import Enigma
+from pynigma import Enigma
 import ujson
 
 

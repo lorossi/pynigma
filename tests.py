@@ -1,4 +1,4 @@
-from enigma import Enigma
+from pynigma import Enigma
 from enigmafactory import EnigmaFactory, CustomEnigmaFactory
 
 from string import ascii_uppercase
