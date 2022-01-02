@@ -137,7 +137,7 @@ class TestEnigma(unittest.TestCase):
         e.setUKW("A")
         e.setRotors("I", "II", "III")
 
-        for _ in range(100):
+        for _ in range(TESTS_NUM):
             pos = self._random_positions(3)
             e.setRotorsPositions(pos)
             self.assertEqual(e.rotors_position, pos)
@@ -145,7 +145,7 @@ class TestEnigma(unittest.TestCase):
     def test_add_ukw(self):
         e = Enigma()
 
-        for u in e._ukw_map:
+        for u in e.available_UKWs:
             e.setUKW(u)
 
         with self.assertRaises(Exception):
@@ -154,6 +154,7 @@ class TestEnigma(unittest.TestCase):
     def test_set_plugboard(self):
         e = Enigma()
         e.setPlugboard("AB", "CD", "EF")
+        self.assertEqual(e.plugboard, ["AB", "CD", "EF"])
 
         with self.assertRaises(Exception):
             e.setPlugboard("A", "D", "E")
@@ -163,6 +164,11 @@ class TestEnigma(unittest.TestCase):
 
         with self.assertRaises(Exception):
             e.setPlugboard(["AB" for _ in range(20)])
+
+        for _ in range(TESTS_NUM):
+            plug = self._random_plugs()
+            e.setPlugboard(*plug)
+            self.assertEqual(plug, e.plugboard)
 
     def test_positions(self):
         e = Enigma()
