@@ -10,7 +10,10 @@ class EnigmaFactory:
             self._settings = ujson.load(f)
 
     def __str__(self) -> str:
-        return f"Class used to create historically accurate Enigma machines. Available models: {', '.join(self.available_models)}"
+        return (
+            f"Class used to create historically accurate Enigma machines. "
+            f"Available models: {', '.join(self.available_models)}."
+        )
 
     def createEnigma(self, model: str) -> Enigma:
         if self._settings.get(model):
@@ -32,18 +35,8 @@ class CustomEnigmaFactory:
     def __str__(self) -> str:
         return (
             f"Class used to create custom Enigma machines. "
-            f"Current settings: {ujson.dumps(self._settings, ensure_ascii=True, sort_keys=True)}"
+            f"Current settings: {self.settings}"
         )
-
-    def _initSettings(self) -> None:
-        self._settings = {
-            "rotors_map": {},
-            "ukw_map": {},
-            "etw_map": {},
-            "max_rotors": None,
-            "model": None,
-            "year": None,
-        }
 
     def createCustomEnigma(self) -> Enigma:
         e = Enigma(**self._settings)
@@ -73,3 +66,20 @@ class CustomEnigmaFactory:
 
     def setMaxRotors(self, max_rotors: int) -> None:
         self._settings["max_rotors"] = max_rotors
+
+    def _initSettings(self) -> None:
+        self._settings = {
+            "rotors_map": {},
+            "ukw_map": {},
+            "etw_map": {},
+            "max_rotors": None,
+            "model": None,
+            "year": None,
+        }
+
+    @property
+    def settings(self) -> str:
+        return ", ".join(
+            f"{k.replace('_map', '')}: {v if v else 'not set'}"
+            for k, v in self._settings.items()
+        )
