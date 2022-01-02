@@ -36,7 +36,7 @@ class Rotor:
 
         # find a smarter way to do this, maybe using dictionaries?
         # there's no much sense in looking at the index of a letter to go right
-        self._alphabet = deque([a.upper() for a in alphabet])
+        self._alphabet = {ascii_uppercase[x]: alphabet[x].upper() for x in range(26)}
 
         self._notch = [ord(n.upper()) - 65 for n in notch]
         self._position = ord(position.upper()) - 65
