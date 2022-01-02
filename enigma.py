@@ -108,7 +108,7 @@ class Rotor:
         Returns:
             str
         """
-        return chr(self._wrapOrd(self._position) + 65)
+        return chr(self._position % 26 + 65)
 
     @position.setter
     def position(self, position: str) -> None:
