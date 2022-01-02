@@ -88,7 +88,7 @@ class TestEnigma(unittest.TestCase):
     ) -> tuple[str, str]:
         e = Enigma()
 
-        for _ in range(randint(3, max_rotors)):
+        for _ in range(max_rotors):
             e.addRotor(choice(e.available_rotors))
 
         e.setUKW(choice(e.available_UKWs))
