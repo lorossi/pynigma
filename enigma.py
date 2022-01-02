@@ -182,7 +182,8 @@ class Enigma:
             f"Enigma machine model {self.model}, built in {self.year}. "
             f"Current ETW: {self._etw if self._etw else 'N/A'}. "
             f"Current UKW: {self._ukw if self._ukw else 'N/A'}. "
-            f"Current rotors position: {self.rotors_position}."
+            f"Current rotors position: {self.rotors_position}. "
+            f"Current plugboard: {self.plugboard} "
         )
 
     def __init__(self, **kwargs) -> None:
@@ -468,6 +469,10 @@ class Enigma:
         return [r for r in self._rotors_map.keys()]
 
     @property
+    def plugboard(self) -> str:
+        return ["".join(p[x] for x in range(2)) for p in self._plugboard]
+
+    @property
     def available_UKWs(self) -> list[str]:
         if self._ukw_map:
             return [u for u in self._ukw_map.keys()]
@@ -492,12 +497,3 @@ class Enigma:
     @property
     def model(self) -> str:
         return self._model
-
-
-def main():
-    ...
-    print("This should not happen")
-
-
-if __name__ == "__main__":
-    main()
