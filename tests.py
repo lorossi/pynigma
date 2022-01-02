@@ -234,20 +234,23 @@ class TestEnigma(unittest.TestCase):
         self.assertEqual(decoded, clear)
 
     def test_factory(self):
-        max_rotors = {
-            "Commercial": 3,
-            "Rocket": 3,
-            "Swiss": 3,
-            "M3": 3,
-            "M4": 4,
-            "M4-Thin": 4,
-        }
-
         factory = EnigmaFactory()
+        settings = factory._settings
+
         for model in factory.available_models:
             e = factory.createEnigma(model)
             self.assertEqual(e.model, model)
-            self.assertEqual(max_rotors[e.model], e.max_rotors)
+            self.assertEqual(e.year, settings[e.model]["year"])
+            self.assertEqual(settings[e.model]["max_rotors"], e.max_rotors)
+            self.assertEqual(
+                [k for k in settings[e.model]["rotors_map"].keys()], e.available_rotors
+            )
+            self.assertEqual(
+                [k for k in settings[e.model]["ukw_map"].keys()], e.available_UKWs
+            )
+            self.assertEqual(
+                [k for k in settings[e.model]["etw_map"].keys()], e.available_ETWs
+            )
 
         e = factory.createEnigma("M4")
         with self.assertRaises(Exception):
@@ -255,6 +258,9 @@ class TestEnigma(unittest.TestCase):
 
         with self.assertRaises(Exception):
             e.setETW("A")
+
+        with self.assertRaises(Exception):
+            e.setUKW("Z")
 
         with self.assertRaises(Exception):
             factory.createEnigma("British")
