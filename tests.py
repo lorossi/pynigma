@@ -362,6 +362,27 @@ class TestEnigma(unittest.TestCase):
 
             self.assertEqual(decoded, clear)
 
+    def test_different_letters(self):
+        for _ in range(TESTS_NUM):
+            e = Enigma()
+
+            for _ in range(5):
+                e.addRotor(choice(e.available_rotors))
+
+            e.setUKW(choice(e.available_UKWs))
+            e.setETW(choice(e.available_ETWs))
+
+            pos = self._random_positions(len(e._rotors))
+            clear = self._random_string(STRING_LENGTH)
+
+            e.setPlugboard(*self._random_plugs())
+
+            e.setRotorsPositions(pos)
+            encoded = e.encode(clear)
+
+            for x in range(STRING_LENGTH):
+                self.assertNotEqual(encoded[x], clear[x])
+
 
 if __name__ == "__main__":
     unittest.main()
