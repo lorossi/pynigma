@@ -2,7 +2,7 @@ from pynigma import Enigma
 import ujson
 
 
-class EnigmaFactory:
+class EnigmaFactory(Enigma):
     def __init__(self) -> None:
         # settings sourced from https://www.cryptomuseum.com/crypto/enigma/wiring.htm
         # TODO remember to credit it in readme
@@ -17,7 +17,8 @@ class EnigmaFactory:
 
     def createEnigma(self, model: str) -> Enigma:
         if self._settings.get(model):
-            return Enigma(model=model, **self._settings[model])
+            super().__init__(model=model, **self._settings[model])
+            return self
 
         raise ValueError(
             f"Invalid model. Valid models are: {', '.join(self.available_models)}"
@@ -28,7 +29,7 @@ class EnigmaFactory:
         return [m for m in self._settings]
 
 
-class CustomEnigmaFactory:
+class CustomEnigmaFactory(Enigma):
     def __init__(self) -> None:
         self._initSettings()
 
@@ -39,9 +40,9 @@ class CustomEnigmaFactory:
         )
 
     def createCustomEnigma(self) -> Enigma:
-        e = Enigma(**self._settings)
+        super().__init__(**self._settings)
         self._initSettings()
-        return e
+        return self
 
     def addCustomETW(self, model: str, alphabet: str) -> None:
         self._settings["etw_map"][model] = {"alphabet": alphabet}
