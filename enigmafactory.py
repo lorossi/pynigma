@@ -4,12 +4,14 @@ from pynigma import Enigma
 
 
 class EnigmaFactory(Enigma):
-    """This class handles the factory to generate historically accurate Enigma machines."""
+    """This class handles the factory to generate historically accurate \
+        Enigma machines."""
 
     def __init__(self) -> None:
         """Instantiate an Enigma machine.
 
-        Settings have been sourced from https://www.cryptomuseum.com/crypto/Enigma/wiring.htm
+        Settings have been sourced from \
+        https://www.cryptomuseum.com/crypto/Enigma/wiring.htm
         """
         with open("settings.json") as f:
             self._settings = ujson.load(f)
