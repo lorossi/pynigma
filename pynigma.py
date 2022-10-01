@@ -1,3 +1,4 @@
+"""This module contains all the logic to run the Python Enigma Machine."""
 from copy import deepcopy
 from datetime import datetime
 from collections import deque
@@ -5,10 +6,12 @@ from string import ascii_letters, ascii_uppercase
 
 
 class Rotor:
+    """Rotor composing an Enigma machine."""
+
     def __init__(
         self, alphabet: str, notch: list[str], position: str = "A", model: str = None
     ) -> None:
-        """Creates a rotor.
+        """Instantiate a rotor.
 
         Args:
             alphabet (str): Alphabet of the rotor
@@ -21,15 +24,14 @@ class Rotor:
             ValueError: Notch is invalid
             ValueError: Starting position is invalid
         """
-
         # check if all letters are in the alphabet and if alphabet is valid
         if len(alphabet) != 26 or any(
-            l not in alphabet.upper() for l in ascii_uppercase
+            letter not in alphabet.upper() for letter in ascii_uppercase
         ):
             raise ValueError(f"Invalid rotor alphabet ({alphabet})")
         # check if notch is valid
         for n in notch:
-            if not n in ascii_letters:
+            if n not in ascii_letters:
                 raise ValueError(f"Invalid notch {n}")
         # check if start position is valid
         if len(position) > 1 or position not in ascii_letters:
@@ -47,6 +49,11 @@ class Rotor:
         self._stepped = False
 
     def __str__(self) -> str:
+        """Return the string representation of the rotor.
+
+        Returns:
+            str
+        """
         return f"Alphabet: {''.join(self._alphabet)}. Position: {self._position}"
 
     def left(self, letter: str) -> str:
@@ -74,7 +81,7 @@ class Rotor:
         return chr(pos + 65)
 
     def step(self, steps=1) -> None:
-        """Steps the rotor by a set number of steps.
+        """Step the rotor by a set number of steps.
 
         Args:
             steps (int, optional): Number of steps. Defaults to 1.
@@ -84,11 +91,11 @@ class Rotor:
         self._stepped = True
 
     def resetStep(self) -> None:
-        """Resets the current status of the rotation."""
+        """Reset the current status of the rotation."""
         self._stepped = False
 
     def _wrapOrd(self, position: int) -> int:
-        """Wraps the ord of a letter in range 0-25
+        """Wrap the ord (number representation) of a letter in range 0-25.
 
         Args:
             position (int)
@@ -104,7 +111,7 @@ class Rotor:
 
     @property
     def position(self) -> str:
-        """Returns current position fo the rotor as a letter
+        """Return current position fo the rotor as a letter.
 
         Returns:
             str
@@ -113,7 +120,7 @@ class Rotor:
 
     @position.setter
     def position(self, position: str) -> None:
-        """Sets the current position of the rotor as a letter."""
+        """Set the current position of the rotor as a letter."""
         if len(position) > 1 or position not in ascii_letters:
             raise ValueError(f"Invalid starting position {position}")
 
@@ -123,7 +130,7 @@ class Rotor:
 
     @property
     def alphabet(self) -> str:
-        """Returns the alphabet of the rotor as a string.
+        """Return the alphabet of the rotor as a string.
 
         Returns:
             str
@@ -132,7 +139,8 @@ class Rotor:
 
     @property
     def hit_notch(self) -> bool:
-        """Returns True if the rotor has hit a notch position in the current step, False otherwise.
+        """Return True if the rotor has hit a notch position in the current step, \
+             False otherwise.
 
         Returns:
             bool
@@ -141,7 +149,8 @@ class Rotor:
 
     @property
     def in_notch(self) -> bool:
-        """Returns True if the rotor is in the notch position when the step is completed, False otherwise.
+        """Return True if the rotor is in the notch position when the step \
+            is completed, False otherwise.
 
         Returns:
             bool
@@ -150,7 +159,7 @@ class Rotor:
 
     @property
     def model(self) -> str:
-        """Returns rotor model.
+        """Return rotor model.
 
         Returns:
             str
@@ -159,10 +168,21 @@ class Rotor:
 
 
 class Stator(Rotor):
+    """Rotor of the Enigma machine."""
+
     def __init__(self, alphabet: str, model: str = None):
+        """Instantiate a stator.
+
+        Args:
+            alphabet (str): alphabet of the rotor
+            model (str, optional): name of the model. Defaults to None.
+
+        Raises:
+            ValueError: alphabet contains non valid letters
+        """
         # check if all letters are in the alphabet and if alphabet is valid
         if len(alphabet) != 26 or any(
-            l not in alphabet.upper() for l in ascii_uppercase
+            letter not in alphabet.upper() for letter in ascii_uppercase
         ):
             raise ValueError(f"Invalid stator alphabet ({alphabet})")
 
@@ -174,32 +194,35 @@ class Stator(Rotor):
             raise ValueError(f"Invalid stator alphabet ({alphabet})")
 
     def __str__(self) -> str:
+        """Return the string representation of the Stator.
+
+        Returns:
+            str
+        """
         return f"Alphabet: {''.join(self._alphabet)}"
 
 
 class Enigma:
-    def __str__(self) -> str:
-        return (
-            f"Enigma machine model {self.model}, built in {self.year}. "
-            f"Current ETW: {self.current_ETW if self.current_ETW else 'not set'}. "
-            f"Current UKW: {self.current_UKW if self.current_UKW else 'not set'}. "
-            f"Current rotors: {self.current_rotors if self.current_rotors else 'not set'}. "
-            f"Current rotors position: {self.rotors_position if self.rotors_position else 'not set'}. "
-            f"Current plugboard: {self.plugboard if self.plugboard else 'not set'} "
-        )
+    """Class handling the enigma machine."""
 
     def __init__(self, **kwargs) -> None:
-        """Create a Enigma machine. With default settings, it generates a version similar to 1938 model M3.
+        """Create a Enigma machine. \
+            With default settings, it generates a version similar to 1938 model M3.
 
         Keyword Args:
-            rotors_map (Optional[Dict]): containing name, alphabet and notch for each available rotor. Defaults to M3 rotors.
-            ukw_map (Optional[Dict]): containing name, alphabet and notch for each available reflector (UKW). Defaults to M3 UKWs.
-            etw_map (Optional[Dict]): containing name, alphabet and notch for each available ETW. Defaults to M3 ETW.
-            max_rotors (Optional[int]): number of maximum allowed rotors. Defaults to None (unlimited rotors.)
-            model (Optional[str]): name of the model of the machine. Defaults to "Custom".
-            year (Optional[int]): year of manifacture of the machine. Defaults to current year.
+            rotors_map (Optional[Dict]): containing name, alphabet and notch for \
+                each available rotor. Defaults to M3 rotors.
+            ukw_map (Optional[Dict]): containing name, alphabet and notch for each \
+                available reflector (UKW). Defaults to M3 UKWs.
+            etw_map (Optional[Dict]): containing name, alphabet and notch for each \
+                available ETW. Defaults to M3 ETW.
+            max_rotors (Optional[int]): number of maximum allowed rotors. \
+                Defaults to None (unlimited rotors.)
+            model (Optional[str]): name of the model of the machine. \
+                Defaults to "Custom".
+            year (Optional[int]): year of manufacture of the machine. \
+                Defaults to current year.
         """
-
         if kwargs.get("etw_map") or isinstance(kwargs.get("etw_map"), dict):
             self._etw_map = deepcopy(kwargs["etw_map"])
         else:
@@ -235,8 +258,25 @@ class Enigma:
         self._ukw = None
         self._plugboard = []
 
+    def __str__(self) -> str:
+        """Return the string representation of the Machine.
+
+        Returns:
+            str
+        """
+        return (
+            f"Enigma machine model {self.model}, built in {self.year}. "
+            f"Current ETW: {self.current_ETW if self.current_ETW else 'not set'}. "
+            f"Current UKW: {self.current_UKW if self.current_UKW else 'not set'}. "
+            "Current rotors: "
+            f"{self.current_rotors if self.current_rotors else 'not set'}. "
+            f"Current rotors position: "
+            f"{self.rotors_position if self.rotors_position else 'not set'}. "
+            f"Current plugboard: {self.plugboard if self.plugboard else 'not set'} "
+        )
+
     def addRotor(self, rotor: str, position: str = "A") -> None:
-        """Adds a rotor to the machine.
+        """Add a rotor to the machine.
 
         Args:
             rotor (str): Model of the rotor
@@ -262,7 +302,7 @@ class Enigma:
             raise ValueError(f"Unknown rotor {rotor}")
 
     def setRotors(self, *rotors: str) -> None:
-        """Sets a variable number of rotors according to their model.
+        """Set a variable number of rotors according to their model. \
         Their starting positions are defaulted to "A".
 
         Shorthand for self.addRotor() called multiple times.
@@ -272,11 +312,11 @@ class Enigma:
             self.addRotor(r, "A")
 
     def removeRotors(self) -> None:
-        """Removes all rotors from the current machine."""
+        """Remove all rotors from the current machine."""
         self._rotors = []
 
     def setRotorsPositions(self, pos: str) -> None:
-        """Set configuration of the rotors
+        """Set the configuration of the rotors.
 
         Args:
             pos (str): String of characters corresponding to the position of each rotor.
@@ -337,12 +377,13 @@ class Enigma:
         self._plugboard = [(x[0], x[1]) for x in plugs]
 
     def encode(self, clean: str, format_output: bool = False) -> str:
-        """Encodes a string using the current configuration of the machine.
+        """Encode a string using the current configuration of the machine. \
         Can output formatted strings.
 
         Args:
             clean (str): String to be encoded.
-            format_output (bool, optional): If True, groups the encoded strings into 5 characters words. Defaults to False.
+            format_output (bool, optional): If True, groups the encoded strings \
+                into 5 characters words. Defaults to False.
 
         Raises:
             Exception: No rotors have been added
@@ -396,7 +437,7 @@ class Enigma:
         return self._formatOutput(unformatted)
 
     def _formatOutput(self, raw: str) -> str:
-        """Format string by grouping words by 4 letters
+        """Format string by grouping words by 4 letters.
 
         Args:
             raw (str): Raw, unformatted, string
@@ -420,7 +461,7 @@ class Enigma:
         return c
 
     def _signalTravel(self, c: str) -> str:
-        """Moves a signal (the letter) through the machine, effectively encoding it.
+        """Move a signal (the letter) through the machine, effectively encoding it. \
         Handles ETW, UKW and rotors.
 
         Args:
@@ -451,8 +492,9 @@ class Enigma:
         return c
 
     def _computeRotations(self) -> None:
-        """Handles all the rotations of the rotors in the machine.
-        This has to be called after each step.
+        """Handle all the rotations of the rotors in the machine.
+
+        This method has to be called after each step.
         """
         for x in range(len(self._rotors) - 1, 0, -1):
             # notch stepping
@@ -465,8 +507,8 @@ class Enigma:
                 self._rotors[x - 1].step()
 
     def _currentYear(self) -> int:
-        """Returns the current year.
-        Pretty useless NGL. But it's for custom enigma creation.
+        """Return the current year. \
+        Pretty useless NGL. But it's for custom Enigma creation.
 
         Returns:
             int
@@ -484,7 +526,7 @@ class Enigma:
 
     @property
     def current_rotors(self) -> str:
-        """Returns the models of the currently used rotors.
+        """Return the models of the currently used rotors.
 
         Returns:
             str
@@ -493,7 +535,7 @@ class Enigma:
 
     @property
     def available_rotors(self) -> list[str]:
-        """Returns list of available rotors for the current machine.
+        """Return list of available rotors for the current machine.
 
         Returns:
             list[str]
@@ -502,7 +544,7 @@ class Enigma:
 
     @property
     def available_UKWs(self) -> list[str]:
-        """Returns list of available UKWs for the current machine.
+        """Return list of available UKWs for the current machine.
 
         Returns:
             list[str]
@@ -513,7 +555,7 @@ class Enigma:
 
     @property
     def current_UKW(self) -> str:
-        """Returns the model of the currently used UKW
+        """Return the model of the currently used UKW.
 
         Returns:
             str
@@ -522,7 +564,7 @@ class Enigma:
 
     @property
     def available_ETWs(self) -> list[str]:
-        """Returns list of available ETWs for the current machine.
+        """Return list of available ETWs for the current machine.
 
         Returns:
             list[str]
@@ -533,7 +575,7 @@ class Enigma:
 
     @property
     def current_ETW(self) -> str:
-        """Returns the model of the currently used ETW
+        """Return the model of the currently used ETW.
 
         Returns:
             str
@@ -542,7 +584,7 @@ class Enigma:
 
     @property
     def plugboard(self) -> str:
-        """Returns the current plugboard as a string.
+        """Return the current plugboard as a string.
 
         Returns:
             str
@@ -551,7 +593,7 @@ class Enigma:
 
     @property
     def max_rotors(self) -> int:
-        """Returns the maximum number of allowed rotors on the current machine.
+        """Return the maximum number of allowed rotors on the current machine.
 
         Returns:
             int
@@ -562,7 +604,7 @@ class Enigma:
 
     @property
     def year(self) -> int:
-        """Returns the manufacturing year of the current machine.
+        """Return the manufacturing year of the current machine.
 
         Returns:
             int
@@ -571,7 +613,7 @@ class Enigma:
 
     @property
     def model(self) -> str:
-        """Returns model name of the current machine.
+        """Return model name of the current machine.
 
         Returns:
             str

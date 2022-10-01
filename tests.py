@@ -284,6 +284,7 @@ class TestEnigma(unittest.TestCase):
             self.assertEqual(
                 [k for k in settings[e.model]["etw_map"].keys()], e.available_ETWs
             )
+            self.assertIsInstance(e, Enigma)
 
         e = f.createEnigma("M4")
         with self.assertRaises(Exception):
